@@ -42,7 +42,7 @@ public class OrderMenuMapper {
             return null;
         OrderMenuRes.OrderMenuResBuilder orderMenuResBuilder = OrderMenuRes.builder();
         return orderMenuResBuilder
-                .menuName(orderMenu.getMenu().getName())
+                .menuId(orderMenu.getMenu().getId())
                 .orderPrice(orderMenu.getOrderPrice())
                 .count(orderMenu.getCount())
                 .build();
