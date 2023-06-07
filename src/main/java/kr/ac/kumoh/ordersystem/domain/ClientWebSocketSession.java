@@ -14,12 +14,12 @@ import java.io.IOException;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StoreWebSocketSession {
+public class ClientWebSocketSession {
 
-    private Integer storeId;
+    private Order order;
     private WebSocketSession webSocketSession;
 
-    public void sendToStore(ObjectMapper objectMapper, Object object) throws IOException {
+    public void sendToClient(ObjectMapper objectMapper, Object object) throws IOException {
         webSocketSession.sendMessage(
                 new TextMessage(objectMapper.writeValueAsString(object)));
     }

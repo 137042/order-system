@@ -9,7 +9,6 @@ import kr.ac.kumoh.ordersystem.dto.OrderRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -49,7 +48,6 @@ public class OrderMapper {
         return orderResBuilder
                 .orderId(order.getId())
                 .orderStatus(order.getStatus())
-                .orderMenuResList(new ArrayList<>())
                 .build();
     }
 

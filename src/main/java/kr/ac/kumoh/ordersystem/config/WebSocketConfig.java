@@ -1,4 +1,4 @@
-package kr.ac.kumoh.ordersystem;
+package kr.ac.kumoh.ordersystem.config;
 
 import kr.ac.kumoh.ordersystem.websocket.OrderWebSocketHandler;
 import lombok.RequiredArgsConstructor;

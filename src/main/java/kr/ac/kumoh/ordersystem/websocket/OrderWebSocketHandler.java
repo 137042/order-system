@@ -32,7 +32,7 @@ public class OrderWebSocketHandler extends AbstractWebSocketHandler {
     }
 
     @Override
-    public void handleMessage(@NonNull WebSocketSession session, @NonNull WebSocketMessage<?> webSocketMessage) throws Exception {
+    public void handleMessage(@NonNull WebSocketSession session, @NonNull WebSocketMessage<?> webSocketMessage) {
         log.info("[ SESSION {} ] RAW MESSAGE RECEIVED {}", session.getId(), hr);
         if(webSocketMessage instanceof TextMessage)
             handleTextMessage(session, (TextMessage) webSocketMessage);
@@ -41,14 +41,23 @@ public class OrderWebSocketHandler extends AbstractWebSocketHandler {
     }
 
     @Override
-    public void handleTextMessage(@NonNull WebSocketSession session, TextMessage textMessage) throws IOException {
-        OrderReq orderReq = objectMapper.readValue(textMessage.getPayload(), OrderReq.class);
-        if(orderReq.getMemberId() == null && orderReq.getOrderMenuReqList() == null)
-            orderWebSocketListHandler.addToStoreList(session, orderReq.getStoreId());
-        else if(orderReq.getStatus().equals(OrderStatus.ORDERED))
-            orderWebSocketListHandler.sendToStore(session, orderReq);
-        else if(orderReq.getOrderId() != null && orderReq.getStoreId() != null){
-            orderWebSocketListHandler.acceptOrder(session, orderReq);
+    public void handleTextMessage(@NonNull WebSocketSession session, TextMessage textMessage) {
+        try {
+            OrderReq orderReq = objectMapper.readValue(textMessage.getPayload(), OrderReq.class);
+            if(orderReq.getStatus() != null){
+                if(orderReq.getStatus().equals(OrderStatus.ORDERED))
+                    orderWebSocketListHandler.sendOrderToStore(session, orderReq);
+                else if(orderReq.getStatus().equals(OrderStatus.ON_DELIVERY))
+                    orderWebSocketListHandler.sendChangedOrderStatusToClient(orderReq);
+                else if(orderReq.getStatus().equals(OrderStatus.REJECTED))
+                    orderWebSocketListHandler.sendChangedOrderStatusToClient(orderReq);
+                else if(orderReq.getStatus().equals(OrderStatus.DELIVERED))
+                    orderWebSocketListHandler.sendChangedOrderStatusToClient(orderReq);
+            }
+            else if(orderReq.getMemberId() == null && orderReq.getOrderMenuReqList() == null)
+                orderWebSocketListHandler.addToStoreList(session, orderReq.getStoreId());
+        } catch(IOException e) {
+            log.info("NULL variable exists");
         }
     }
 
