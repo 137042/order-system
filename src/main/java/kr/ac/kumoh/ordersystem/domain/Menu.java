@@ -5,9 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Builder
@@ -18,6 +16,7 @@ import javax.persistence.Table;
 public class Menu {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;
@@ -25,5 +24,9 @@ public class Menu {
     private String description;
     private byte[] img;
     private String type;
+
+    public Menu(int id){
+        this.id = id;
+    }
 
 }

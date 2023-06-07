@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
@@ -20,6 +17,7 @@ import java.time.LocalDateTime;
 public class Store {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;
@@ -31,5 +29,9 @@ public class Store {
 
     @Column(name = "close_time")
     private LocalDateTime closeTime;
+
+    public Store(int id){
+        this.id = id;
+    }
 
 }
