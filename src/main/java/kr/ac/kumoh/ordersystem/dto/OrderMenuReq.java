@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderMenuReq {
 
-    private int menuId;
+    private Integer menuId;
     private int orderPrice;
     private int count;
 

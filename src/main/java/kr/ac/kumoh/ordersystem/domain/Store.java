@@ -18,7 +18,7 @@ public class Store {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String name;
     private String address;
@@ -30,7 +30,7 @@ public class Store {
     @Column(name = "close_time")
     private LocalDateTime closeTime;
 
-    public Store(int id){
+    public Store(Integer id){
         this.id = id;
     }
 

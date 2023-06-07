@@ -17,12 +17,12 @@ import java.io.IOException;
 @AllArgsConstructor
 public class StoreWebSocketSession {
 
-    private int storeId;
+    private Integer storeId;
     private WebSocketSession webSocketSession;
 
-    public void sendToStore(ObjectMapper objectMapper, OrderReq orderReq) throws IOException {
+    public void sendToStore(ObjectMapper objectMapper, Object object) throws IOException {
         webSocketSession.sendMessage(
-                new TextMessage(objectMapper.writeValueAsString(orderReq)));
+                new TextMessage(objectMapper.writeValueAsString(object)));
     }
 
 }

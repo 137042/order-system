@@ -17,7 +17,7 @@ public class OrderMenu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
@@ -28,8 +28,8 @@ public class OrderMenu {
     private Menu menu;
 
     @Column(name = "order_price")
-    private int orderPrice;
+    private Integer orderPrice;
 
-    private int count;
+    private Integer count;
 
 }

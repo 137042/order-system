@@ -3,7 +3,6 @@ package kr.ac.kumoh.ordersystem.websocket;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.ac.kumoh.ordersystem.domain.OrderStatus;
 import kr.ac.kumoh.ordersystem.dto.OrderReq;
-import kr.ac.kumoh.ordersystem.service.OrderMenuService;
 import kr.ac.kumoh.ordersystem.service.OrderWebSocketListHandler;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -44,10 +43,13 @@ public class OrderWebSocketHandler extends AbstractWebSocketHandler {
     @Override
     public void handleTextMessage(@NonNull WebSocketSession session, TextMessage textMessage) throws IOException {
         OrderReq orderReq = objectMapper.readValue(textMessage.getPayload(), OrderReq.class);
-        if(orderReq.getMemberId() == 0 && orderReq.getOrderMenuReqList() == null)
+        if(orderReq.getMemberId() == null && orderReq.getOrderMenuReqList() == null)
             orderWebSocketListHandler.addToStoreList(session, orderReq.getStoreId());
         else if(orderReq.getStatus().equals(OrderStatus.ORDERED))
-            orderWebSocketListHandler.sendToStore(objectMapper, session, orderReq);
+            orderWebSocketListHandler.sendToStore(session, orderReq);
+        else if(orderReq.getOrderId() != null && orderReq.getStoreId() != null){
+            orderWebSocketListHandler.acceptOrder(session, orderReq);
+        }
     }
 
     @Override

@@ -17,15 +17,15 @@ public class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String name;
-    private int price;
+    private Integer price;
     private String description;
-    private byte[] img;
+    private Byte[] img;
     private String type;
 
-    public Menu(int id){
+    public Menu(Integer id){
         this.id = id;
     }
 

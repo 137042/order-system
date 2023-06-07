@@ -14,9 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderReq {
 
+    private Integer orderId;
     private OrderStatus status;
-    private int storeId;
-    private int memberId;
+    private Integer storeId;
+    private Integer memberId;
     private List<OrderMenuReq> orderMenuReqList;
 
 }

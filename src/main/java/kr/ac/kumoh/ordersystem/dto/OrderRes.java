@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderRes {
 
-    private int orderId;
+    private Integer orderId;
     private OrderStatus orderStatus;
     private List<OrderMenuRes> orderMenuResList;
 

@@ -9,6 +9,7 @@ import kr.ac.kumoh.ordersystem.dto.OrderRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -20,11 +21,14 @@ public class OrderMapper {
             return null;
 
         Order.OrderBuilder orderBuilder = Order.builder();
-        return orderBuilder
+        orderBuilder
                 .status(orderReq.getStatus())
                 .store(new Store(orderReq.getStoreId()))
-                .member(new Member(orderReq.getMemberId()))
-                .build();
+                .member(new Member(orderReq.getMemberId()));
+
+        if(orderReq.getOrderId() != null)
+            return orderBuilder.id(orderReq.getOrderId()).build();
+        return orderBuilder.build();
     }
 
     public OrderRes toOrderRes(Order order, List<OrderMenuRes> orderMenuResList){
@@ -35,6 +39,17 @@ public class OrderMapper {
                 .orderId(order.getId())
                 .orderStatus(order.getStatus())
                 .orderMenuResList(orderMenuResList)
+                .build();
+    }
+
+    public OrderRes toOrderRes(Order order){
+        if(order == null)
+            return null;
+        OrderRes.OrderResBuilder orderResBuilder = OrderRes.builder();
+        return orderResBuilder
+                .orderId(order.getId())
+                .orderStatus(order.getStatus())
+                .orderMenuResList(new ArrayList<>())
                 .build();
     }
 

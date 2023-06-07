@@ -17,14 +17,14 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "roll_type")
     private String rollType;
 
     private String name;
 
-    public Member(int id){
+    public Member(Integer id){
         this.id = id;
     }
 
