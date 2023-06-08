@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Custom ###
+*.yaml
+*.properties
+*.yml
+!src/main/resources/application.yaml

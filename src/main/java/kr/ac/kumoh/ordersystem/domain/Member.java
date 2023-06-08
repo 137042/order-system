@@ -1,15 +1,21 @@
 package kr.ac.kumoh.ordersystem.domain;
 
+<<<<<<< HEAD
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "member")
 public class Member {
     @Id @GeneratedValue
     private Long id;
@@ -21,4 +27,8 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<Order>();
+
+    public Member(Long id){
+        this.id = id;
+    }
 }

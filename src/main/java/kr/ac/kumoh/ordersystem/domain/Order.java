@@ -1,59 +1,48 @@
 package kr.ac.kumoh.ordersystem.domain;
 
-import lombok.AccessLevel;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@NamedEntityGraph(
-        name = "order.member.graph",
-        attributeNodes = {
-                @NamedAttributeNode("member")
-        }
-)
-@NamedEntityGraph(
-        name = "orderWithMember.orderMenu.order.Graph",
-        attributeNodes = {
-                @NamedAttributeNode("member"),
-                @NamedAttributeNode(value = "orderItems", subgraph = "orderMenu-subgraph")
-        },
-        subgraphs = {
-                @NamedSubgraph(
-                        name = "orderMenu-subgraph",
-                        attributeNodes = {
-                                @NamedAttributeNode("menu")
-                        }
-                )
-        }
-)
-@Entity
-@Setter
 @Getter
-@Table(name="ORDER")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "\"order\"")
 public class Order {
-    @Id @GeneratedValue
-    private Long id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STORE_ID")
+
+    @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderMenu> orderMenus = new ArrayList<OrderMenu>();
 
+
+    @Transient
+    public void setStatus(OrderStatus status){
+        this.status = status;
+    }
     public void setMember(Member member){
         this.member = member;
         member.getOrders().add(this);
@@ -64,8 +53,8 @@ public class Order {
     }
 
     // 생성 메소드
-    public static Order createOrder(Member member, OrderMenu... orderItems){
-        Order order = new Order();
+    public static kr.ac.kumoh.ordersystem.domain.Order createOrder(Member member, OrderMenu... orderItems){
+        kr.ac.kumoh.ordersystem.domain.Order order = new kr.ac.kumoh.ordersystem.domain.Order();
         order.setMember(member);
         Arrays.stream(orderItems).forEach(order::addOrderMenu);
         order.setStatus(OrderStatus.ORDER);

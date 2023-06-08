@@ -1,27 +1,41 @@
 package kr.ac.kumoh.ordersystem.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 @Getter
-@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "store")
 public class Store {
+
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     private String name;
     private Address address;
     private String tel;
-    @Column(name = "OPEN_TIME")
+
+    @Column(name = "open_time")
     private LocalDateTime openTime;
-    @Column(name="CLOSE_TIME")
+
+    @Column(name = "close_time")
     private LocalDateTime closeTime;
+
+    public Store(Integer id){
+        this.id = id;
+    }
+
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<Order>();
+
 }

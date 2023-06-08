@@ -1,33 +1,41 @@
 package kr.ac.kumoh.ordersystem.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Setter
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name="ORDER_MENU")
+@Table(name = "order_menu")
 public class OrderMenu {
-    @Id @GeneratedValue
-    private Long id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ORDER_ID")
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MENU_ID")
+    @JoinColumn(name = "menu_id", nullable = false)
     private Menu menu;
 
-    @Column(name = "ORDER_PRICE")
-    private int orderPrice;
-    private int count;
+    @Column(name = "order_price")
+    private Integer orderPrice;
+
+    private Integer count;
+
 
     // 생성 메소드
-    public static OrderMenu createOrderItem(Menu menu, int orderPrice, int count){
-        OrderMenu orderMenu = new OrderMenu();
+    public static kr.ac.kumoh.ordersystem.domain.OrderMenu createOrderItem(Menu menu, int orderPrice, int count){
+        kr.ac.kumoh.ordersystem.domain.OrderMenu orderMenu = new kr.ac.kumoh.ordersystem.domain.OrderMenu();
         orderMenu.setMenu(menu);
         orderMenu.setOrderPrice(orderPrice);
         orderMenu.setCount(count);
