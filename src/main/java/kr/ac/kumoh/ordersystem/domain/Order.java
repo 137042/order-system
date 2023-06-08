@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -61,6 +62,21 @@ public class Order {
         Arrays.stream(orderItems).forEach(order::addOrderMenu);
         order.setStatus(OrderStatus.ORDERED);
         return order;
+    }
+
+    // price = 주문 총 가격
+    public static void updateOrderPrice(OrderMenu menu, int price) {
+
+        if (menu.getMenu().getDiscountType() == DiscountType.FixedRate && price >= 15000) {
+            menu.setOrderPrice((int) (menu.getMenu().getPrice() - (menu.getMenu().getPrice() * 0.1)));
+        } else if (menu.getMenu().getDiscountType() == DiscountType.FixedQuantity && price >= 10000) {
+            menu.setOrderPrice(menu.getMenu().getPrice() - 1000);
+        } else if (menu.getMenu().getDiscountType() == DiscountType.Time) {
+            int time = menu.getOrderTime().getHour();
+            if (time <= 11) {
+               menu.setOrderPrice(menu.getMenu().getPrice() - 1000);
+            }
+        }
     }
 
     public void cancel(){
