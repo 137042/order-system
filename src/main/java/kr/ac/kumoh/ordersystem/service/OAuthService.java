@@ -64,7 +64,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
     private Member saveOrUpdate(MemberProfile memberProfile) {
 
         Member member = memberRepository.findByEmailAndProvider(memberProfile.getEmail(), memberProfile.getProvider())
-                .map(m -> m.update(memberProfile.getName()))
+                .map(m -> m.update(memberProfile.getName(), memberProfile.getEmail()))
                 .orElse(memberProfile.toMember());
 
         return memberRepository.save(member);

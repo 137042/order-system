@@ -10,7 +10,7 @@ public enum OAuthAttributes {
     GOOGLE("google", (attributes) -> {
         MemberProfile memberProfile = new MemberProfile();
         memberProfile.setName((String) attributes.get("name"));
-        memberProfile.setEmail((String) attributes.get("email"));
+        memberProfile.setEmail((String)attributes.get("email"));
         return memberProfile;
     }),
 
@@ -19,7 +19,7 @@ public enum OAuthAttributes {
         System.out.println(response);
         MemberProfile memberProfile = new MemberProfile();
         memberProfile.setName((String) response.get("name"));
-        memberProfile.setEmail(((String) response.get("email")));
+        memberProfile.setEmail((String)attributes.get("email"));
         return memberProfile;
     }),
 
@@ -31,7 +31,7 @@ public enum OAuthAttributes {
 
         MemberProfile memberProfile = new MemberProfile();
         memberProfile.setName((String) kakaoProfile.get("nickname"));
-        memberProfile.setEmail((String) kakaoAccount.get("email"));
+        memberProfile.setEmail((String)attributes.get("email"));
         return memberProfile;
     });
 

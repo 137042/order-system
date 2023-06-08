@@ -15,6 +15,8 @@ public class MemberProfile {
     public Member toMember() {
         return Member.builder()
                 .name(name)
+                .email(email)
+                .provider(provider)
                 .build();
     }
 }

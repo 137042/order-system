@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    final String  REDIRECT_URL = "http://localhost:8080/logincheck";
+    final String REDIRECT_URL = "http://localhost:8080/login/oauth2/code/google";
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         var oAuth2User = authentication.getPrincipal();

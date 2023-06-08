@@ -1,6 +1,7 @@
 package kr.ac.kumoh.ordersystem.repository;
 
 import kr.ac.kumoh.ordersystem.domain.Member;
+import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
