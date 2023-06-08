@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,7 +29,7 @@ public class OrderMenu {
     private Menu menu;
 
     @Column(name = "order_time")
-    private LocalDateTime orderTime;
+    private LocalTime orderTime;
 
     @Column(name = "order_price")
     private Integer orderPrice;
@@ -36,14 +38,16 @@ public class OrderMenu {
 
 
     // 생성 메소드
-    public static kr.ac.kumoh.ordersystem.domain.OrderMenu createOrderItem(Menu menu, int orderPrice, int count){
+    public static kr.ac.kumoh.ordersystem.domain.OrderMenu createOrderItem(Menu menu, int orderPrice, int count) {
         kr.ac.kumoh.ordersystem.domain.OrderMenu orderMenu = new kr.ac.kumoh.ordersystem.domain.OrderMenu();
         orderMenu.setMenu(menu);
+
         orderMenu.setOrderPrice(orderPrice);
         orderMenu.setCount(count);
         return orderMenu;
     }
-    public int getTotalPrice(){
-        return getOrderPrice()*getCount();
+
+    public int getTotalPrice() {
+        return getOrderPrice() * getCount();
     }
 }

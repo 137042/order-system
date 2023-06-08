@@ -26,6 +26,8 @@ public class Menu {
     private String img;
     @Enumerated(EnumType.STRING)
     private MenuType type;
+    @Enumerated(EnumType.STRING)
+    private DiscountType discountType;
 
     public Menu(Integer id){
         this.id = id;
@@ -37,5 +39,9 @@ public class Menu {
         this.description = menu.getDescription();
         this.img = menu.getImg();
         this.type = menu.getType();
+    }
+
+    public void updateDiscountType(DiscountType discountType){
+        this.discountType = discountType;
     }
 }
