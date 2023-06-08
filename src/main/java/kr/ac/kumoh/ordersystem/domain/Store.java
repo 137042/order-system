@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +28,10 @@ public class Store {
     private String tel;
 
     @Column(name = "open_time")
-    private LocalDateTime openTime;
+    private LocalTime openTime;
 
     @Column(name = "close_time")
-    private LocalDateTime closeTime;
+    private LocalTime closeTime;
 
     @OneToMany(mappedBy = "member")
     @Builder.Default
