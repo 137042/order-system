@@ -33,6 +33,10 @@ public class Store {
     @Column(name = "close_time")
     private LocalTime closeTime;
 
+    @OneToMany(mappedBy = "member")
+    @Builder.Default
+    private List<Order> orders = new ArrayList<Order>();
+
     public Store(Integer id){
         this.id = id;
     }

@@ -38,6 +38,7 @@ public class Order {
     private Member member;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<OrderMenu> orderMenus = new ArrayList<OrderMenu>();
 
 
