@@ -25,9 +25,15 @@ public class Member {
     private String name;
 
     @OneToMany(mappedBy = "member")
+    @Builder.Default
     private List<Order> orders = new ArrayList<Order>();
 
     public Member(Integer id){
         this.id = id;
+    }
+
+    public Member update(String name) {
+        this.name = name;
+        return this;
     }
 }
