@@ -46,16 +46,18 @@ public class OrderWebSocketHandler extends AbstractWebSocketHandler {
             OrderReq orderReq = objectMapper.readValue(textMessage.getPayload(), OrderReq.class);
             if(orderReq.getStatus() != null){
                 if(orderReq.getStatus().equals(OrderStatus.ORDERED))
-                    orderWebSocketListHandler.sendOrderToStore(session, orderReq);
+                    orderWebSocketListHandler.makeOrderThreadWaiting(
+                            orderWebSocketListHandler.makeNewOrder(session, orderReq));
                 else if(orderReq.getStatus().equals(OrderStatus.ON_DELIVERY))
-                    orderWebSocketListHandler.sendChangedOrderStatusToClient(orderReq);
+                    orderWebSocketListHandler.makeOrderThreadInterrupted(
+                            orderWebSocketListHandler.makeOrderOnDelivery(orderReq));
                 else if(orderReq.getStatus().equals(OrderStatus.REJECTED))
-                    orderWebSocketListHandler.sendChangedOrderStatusToClient(orderReq);
+                    orderWebSocketListHandler.makeOrderRejected(orderReq);
                 else if(orderReq.getStatus().equals(OrderStatus.DELIVERED))
-                    orderWebSocketListHandler.sendChangedOrderStatusToClient(orderReq);
+                    orderWebSocketListHandler.makeOrderDelivered(orderReq);
             }
             else if(orderReq.getMemberId() == null && orderReq.getOrderMenuReqList() == null)
-                orderWebSocketListHandler.addToStoreList(session, orderReq.getStoreId());
+                orderWebSocketListHandler.makeNewStore(session, orderReq.getStoreId());
         } catch(IOException e) {
             log.info("NULL variable exists");
         }
