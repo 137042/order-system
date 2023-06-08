@@ -39,7 +39,9 @@ public class OrderWebSocketListHandler {
     }
 
     public Order makeNewOrder(WebSocketSession session, OrderReq orderReq) throws IOException{
-        Order order = orderRepository.save(orderMapper.toOrder(orderReq));
+        Order order = orderMapper.toOrder(orderReq);
+        order.setOrderTime();
+        order = orderRepository.save(order);
         List<OrderMenu> orderMenuList = orderMenuRepository.saveAll(orderMenuMapper.toOrderMenu(order, orderReq.getOrderMenuReqList()));
 
         StoreWebSocketSession storeSession = storeSessionList.stream()

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,9 +36,16 @@ public class Order {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @Column(name = "order_time")
+    private LocalDateTime orderTime;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderMenu> orderMenus = new ArrayList<OrderMenu>();
 
+    @Transient
+    public void setOrderTime(){
+        this.orderTime = LocalDateTime.now();
+    }
 
     @Transient
     public void setStatus(OrderStatus status){
