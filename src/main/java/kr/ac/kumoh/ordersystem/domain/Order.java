@@ -57,15 +57,15 @@ public class Order {
         kr.ac.kumoh.ordersystem.domain.Order order = new kr.ac.kumoh.ordersystem.domain.Order();
         order.setMember(member);
         Arrays.stream(orderItems).forEach(order::addOrderMenu);
-        order.setStatus(OrderStatus.ORDER);
+        order.setStatus(OrderStatus.ORDERED);
         return order;
     }
 
     public void cancel(){
-        if(status == OrderStatus.COMPLETE){
+        if(status == OrderStatus.DELIVERED){
             throw new IllegalStateException("이미 배송완료된 상품은 취소 불가");
         }
-        this.setStatus(OrderStatus.CANCELED);
+        this.setStatus(OrderStatus.REJECTED);
     }
 
     public int getTotalPrice(){

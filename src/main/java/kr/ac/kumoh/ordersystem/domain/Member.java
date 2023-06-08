@@ -1,6 +1,5 @@
 package kr.ac.kumoh.ordersystem.domain;
 
-<<<<<<< HEAD
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +17,7 @@ import java.util.List;
 @Table(name = "member")
 public class Member {
     @Id @GeneratedValue
-    private Long id;
+    private Integer id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ROLE_TYPE")
@@ -28,7 +27,7 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<Order>();
 
-    public Member(Long id){
+    public Member(Integer id){
         this.id = id;
     }
 }
