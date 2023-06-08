@@ -36,7 +36,7 @@ public class Store {
         this.id = id;
     }
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "store")
     private List<Order> orders = new ArrayList<Order>();
 
 }
