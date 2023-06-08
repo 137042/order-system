@@ -3,6 +3,7 @@ package kr.ac.kumoh.ordersystem.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,6 +25,9 @@ public class OrderMenu {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", nullable = false)
     private Menu menu;
+
+    @Column(name = "order_time")
+    private LocalDateTime orderTime;
 
     @Column(name = "order_price")
     private Integer orderPrice;
