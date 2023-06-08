@@ -20,10 +20,11 @@ public class Member {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "ROLE_TYPE")
-    private MemberRoleType roleType;
+    @Column(name = "role")
+    private MemberRoleType role;
     private String name;
-
+    private String email;
+    private String password;
     @OneToMany(mappedBy = "member")
     @Builder.Default
     private List<Order> orders = new ArrayList<Order>();
@@ -31,6 +32,11 @@ public class Member {
     public Member(Integer id){
         this.id = id;
     }
+
+    public void setPassword(String pwd){
+        this.password = pwd;
+    }
+
 
     public Member update(String name) {
         this.name = name;
