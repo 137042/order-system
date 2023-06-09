@@ -1,6 +1,7 @@
 package kr.ac.kumoh.ordersystem.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.ac.kumoh.ordersystem.domain.Order;
 import kr.ac.kumoh.ordersystem.domain.OrderStatus;
 import kr.ac.kumoh.ordersystem.dto.OrderReq;
 import kr.ac.kumoh.ordersystem.service.OrderWebSocketListHandler;
@@ -15,6 +16,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -45,9 +47,11 @@ public class OrderWebSocketHandler extends AbstractWebSocketHandler {
         try {
             OrderReq orderReq = objectMapper.readValue(textMessage.getPayload(), OrderReq.class);
             if(orderReq.getStatus() != null){
-                if(orderReq.getStatus().equals(OrderStatus.ORDERED))
-                    orderWebSocketListHandler.makeOrderThreadWaiting(
-                            orderWebSocketListHandler.makeNewOrder(session, orderReq));
+                if(orderReq.getStatus().equals(OrderStatus.ORDERED)) {
+                    Order order = orderWebSocketListHandler.makeNewOrder(session, orderReq);
+                    if(order.getStatus().equals(OrderStatus.ORDERED))
+                        orderWebSocketListHandler.makeOrderThreadWaiting(order);
+                }
                 else if(orderReq.getStatus().equals(OrderStatus.ON_DELIVERY))
                     orderWebSocketListHandler.makeOrderThreadInterrupted(
                             orderWebSocketListHandler.makeOrderOnDelivery(orderReq));

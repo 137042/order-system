@@ -1,6 +1,7 @@
 package kr.ac.kumoh.ordersystem.domain;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -36,6 +37,21 @@ public class OrderMenu {
 
     private Integer count;
 
+    @Column(name = "potato_count")
+    @ColumnDefault(value = "0")
+    private int potatoCount;
+
+    @Column(name = "cola_count")
+    @ColumnDefault(value = "0")
+    private int colaCount;
+
+    @Column(name = "single_count")
+    @ColumnDefault(value = "0")
+    private int singleCount;
+
+    @Column(name = "set_count")
+    @ColumnDefault(value = "0")
+    private int setCount;
 
     // 생성 메소드
     public static kr.ac.kumoh.ordersystem.domain.OrderMenu createOrderItem(Menu menu, int orderPrice, int count) {
