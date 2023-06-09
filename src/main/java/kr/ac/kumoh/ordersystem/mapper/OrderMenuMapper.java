@@ -3,6 +3,7 @@ package kr.ac.kumoh.ordersystem.mapper;
 import kr.ac.kumoh.ordersystem.domain.Menu;
 import kr.ac.kumoh.ordersystem.domain.Order;
 import kr.ac.kumoh.ordersystem.domain.OrderMenu;
+import kr.ac.kumoh.ordersystem.dto.AddOrderMenuReq;
 import kr.ac.kumoh.ordersystem.dto.OrderMenuCountRes;
 import kr.ac.kumoh.ordersystem.dto.OrderMenuReq;
 import kr.ac.kumoh.ordersystem.dto.OrderMenuRes;
@@ -29,6 +30,18 @@ public class OrderMenuMapper {
                 .menu(new Menu(orderMenuReq.getMenuId()))
                 .orderPrice(orderMenuReq.getOrderPrice())
                 .count(orderMenuReq.getCount())
+                .build();
+    }
+
+    public OrderMenu toOrderMenu(Order order, AddOrderMenuReq addOrderMenuReq){
+        if(addOrderMenuReq == null)
+            return null;
+        OrderMenu.OrderMenuBuilder orderMenuBuilder = OrderMenu.builder();
+        return orderMenuBuilder
+                .order(order)
+                .menu(new Menu(addOrderMenuReq.getMenuId()))
+                .orderPrice(addOrderMenuReq.getOrderPrice())
+                .count(addOrderMenuReq.getCount())
                 .build();
     }
 

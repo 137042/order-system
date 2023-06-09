@@ -52,5 +52,4 @@ public class OrderMapper {
                 .orderTime(order.getOrderTime())
                 .build();
     }
-
 }
