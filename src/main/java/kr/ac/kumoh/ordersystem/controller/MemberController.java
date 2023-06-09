@@ -21,7 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MemberController {
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
     private final MemberService memberService;
 
 
