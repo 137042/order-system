@@ -22,7 +22,7 @@ import java.util.Map;
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("/menu/count")
+    @PostMapping("/store/menu/count")
     public ResponseEntity<Map<String, Object>> getEachMenuCount(
     ){
         List<OrderMenuCountRes> orderMenuCountRes = orderService.findEachMenuCount();
