@@ -31,7 +31,7 @@ public class OrderController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @PostMapping("/")
+    @PostMapping("/add/menu")
     public ResponseEntity<Map<String, Object>> addOrderMenu(
             @RequestBody AddOrderMenuReq addOrderMenuAtOrderReq
             ){
