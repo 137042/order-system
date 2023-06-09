@@ -55,9 +55,9 @@ public class OrderService {
         return orderMapper.toOrderRes(basketOrder);
     }
 
-    public OrderCancelRes cancelOrder(OrderReq orderReq)
+    public OrderCancelRes cancelOrder(OrderCancelReq orderCancelReq)
     {
-        Order order = orderRepository.findById(orderReq.getOrderId()).get();
+        Order order = orderRepository.findById(orderCancelReq.getOrderId()).get();
         boolean success;
         if(order.getStatus() != OrderStatus.ORDERED){
             success = false;

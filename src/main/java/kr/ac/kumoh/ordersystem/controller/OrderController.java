@@ -50,9 +50,9 @@ public class OrderController {
 
     @PostMapping("/cancel")
     public ResponseEntity<Map<String, Object>> cancelOrder(
-            @RequestBody OrderReq orderReq
+            @RequestBody OrderCancelReq orderCancelReq
     ){
-        OrderCancelRes orderCancelRes = orderService.cancelOrder(orderReq);
+        OrderCancelRes orderCancelRes = orderService.cancelOrder(orderCancelReq);
         Map<String, Object> map = new HashMap<>();
         map.put("data", orderCancelRes);
         return new ResponseEntity<>(map, HttpStatus.OK);
