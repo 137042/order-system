@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Printable;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -23,9 +24,9 @@ public class PrincipalDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println(username);
         Member member = memberRepository.findByEmail(username);
         System.out.println(member);
-        System.out.println(member.getRole().toString());
         return new PrincipalDetails(member);
     }
 }

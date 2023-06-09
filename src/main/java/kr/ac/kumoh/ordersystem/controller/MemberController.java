@@ -24,16 +24,6 @@ public class MemberController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private final MemberService memberService;
 
-    @GetMapping ("/join")
-    public ResponseEntity<Map<String, Object>> join(){
-        Member member = new Member(10, MemberRoleType.STORE, "겸지", "ruawl12@naver.com", "0000", new ArrayList<>());
-        String encPassword = bCryptPasswordEncoder.encode(member.getPassword());
-        member.setPassword(encPassword);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("data", member.getPassword());
-        return new ResponseEntity<>(map, HttpStatus.OK);
-    }
 
 //    @PostMapping ("/login")
 //    public ResponseEntity<Map<String, Object>> login(
