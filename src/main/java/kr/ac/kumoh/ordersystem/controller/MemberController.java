@@ -44,7 +44,7 @@ public class MemberController {
 //        return new ResponseEntity<>(map, HttpStatus.OK);
 //    }
 
-    @PostMapping("/order/list")
+    @PostMapping("/member/orderList")
     public ResponseEntity<Map<String, Object>> getMemberOrders(
             @RequestBody MemberReq memberReq
             ){

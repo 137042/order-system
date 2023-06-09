@@ -1,9 +1,6 @@
 package kr.ac.kumoh.ordersystem.controller;
 
-import kr.ac.kumoh.ordersystem.dto.AddOrderMenuReq;
-import kr.ac.kumoh.ordersystem.dto.OrderCancelRes;
-import kr.ac.kumoh.ordersystem.dto.OrderReq;
-import kr.ac.kumoh.ordersystem.dto.OrderRes;
+import kr.ac.kumoh.ordersystem.dto.*;
 import kr.ac.kumoh.ordersystem.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +38,17 @@ public class OrderController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @PostMapping("/order/cancel")
+    @PostMapping("/menu/list")
+    public ResponseEntity<Map<String, Object>> getBasket(
+            @RequestBody MemberReq memberReq
+            ){
+        OrderRes orderRes = orderService.getBasketRes(memberReq);
+        Map<String, Object> map = new HashMap<>();
+        map.put("data", orderRes);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    @PostMapping("/cancel")
     public ResponseEntity<Map<String, Object>> cancelOrder(
             @RequestBody OrderReq orderReq
     ){

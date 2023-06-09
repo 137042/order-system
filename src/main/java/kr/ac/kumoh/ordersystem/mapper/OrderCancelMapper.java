@@ -17,8 +17,6 @@ public class OrderCancelMapper {
         return orderCancelResBuilder
                 .orderId(order.getId())
                 .orderStatus(order.getStatus())
-                .orderTime(order.getOrderTime())
-                .orderMenuResList(orderMenuMapper.toOrderMenuRes(order.getOrderMenus()))
                 .cancelSuccess(success)
                 .build();
     }
