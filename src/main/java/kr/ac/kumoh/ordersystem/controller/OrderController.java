@@ -1,8 +1,8 @@
 package kr.ac.kumoh.ordersystem.controller;
 
-import kr.ac.kumoh.ordersystem.domain.Order;
 import kr.ac.kumoh.ordersystem.dto.AddOrderMenuReq;
-import kr.ac.kumoh.ordersystem.dto.OrderMenuCountRes;
+import kr.ac.kumoh.ordersystem.dto.OrderCancelRes;
+import kr.ac.kumoh.ordersystem.dto.OrderReq;
 import kr.ac.kumoh.ordersystem.dto.OrderRes;
 import kr.ac.kumoh.ordersystem.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -39,6 +38,16 @@ public class OrderController {
         OrderRes orderRes = orderService.createOrAddMenu(addOrderMenuAtOrderReq);
         Map<String, Object> map = new HashMap<>();
         map.put("data", orderRes);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    @PostMapping("/order/cancel")
+    public ResponseEntity<Map<String, Object>> cancelOrder(
+            @RequestBody OrderReq orderReq
+    ){
+        OrderCancelRes orderCancelRes = orderService.cancelOrder(orderReq);
+        Map<String, Object> map = new HashMap<>();
+        map.put("data", orderCancelRes);
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }

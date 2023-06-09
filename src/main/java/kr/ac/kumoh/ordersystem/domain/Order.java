@@ -85,12 +85,4 @@ public class Order {
             }
         }
     }
-
-    public void cancel(){
-        if(status == OrderStatus.DELIVERED){
-            throw new IllegalStateException("이미 배송완료된 상품은 취소 불가");
-        }
-        this.setStatus(OrderStatus.REJECTED);
-    }
-
 }
