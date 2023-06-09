@@ -39,7 +39,9 @@ public class OrderWebSocketListHandler {
     }
 
     public Order makeNewOrder(WebSocketSession session, OrderReq orderReq) throws IOException{
-        Order order = orderRepository.save(orderMapper.toOrder(orderReq));
+        Order order = orderMapper.toOrder(orderReq);
+        order.setOrderTime();
+        order = orderRepository.save(order);
         List<OrderMenu> orderMenuList = orderMenuRepository.saveAll(orderMenuMapper.toOrderMenu(order, orderReq.getOrderMenuReqList()));
 
         StoreWebSocketSession storeSession = storeSessionList.stream()
@@ -61,6 +63,7 @@ public class OrderWebSocketListHandler {
                     Thread.sleep(60 * 1000);
                     order.setStatus(OrderStatus.REJECTED);
                     updateOrderStatus(order);
+                    notifyToStore(order);
                 } catch (InterruptedException e) {
                     log.info("ORDER ACCEPTANCE");
                 } catch (IOException e) {
@@ -117,6 +120,14 @@ public class OrderWebSocketListHandler {
             clientWebSocketSession.getWebSocketSession().close();
 
         return order;
+    }
+
+    private void notifyToStore(Order order) throws IOException {
+        StoreWebSocketSession storeSession = storeSessionList.stream()
+                .filter(s -> s.getStoreId().equals(order.getStore().getId()))
+                .findAny().orElseThrow(NoSuchElementException::new);
+
+        storeSession.sendToStore(objectMapper, orderMapper.toOrderRes(order));
     }
 
 }

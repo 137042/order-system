@@ -37,6 +37,7 @@ public class OrderMapper {
         return orderResBuilder
                 .orderId(order.getId())
                 .orderStatus(order.getStatus())
+                .orderTime(order.getOrderTime())
                 .orderMenuResList(orderMenuResList)
                 .build();
     }
@@ -48,6 +49,7 @@ public class OrderMapper {
         return orderResBuilder
                 .orderId(order.getId())
                 .orderStatus(order.getStatus())
+                .orderTime(order.getOrderTime())
                 .build();
     }
 

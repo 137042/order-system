@@ -37,10 +37,17 @@ public class Order {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @Column(name = "order_time")
+    private LocalDateTime orderTime;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @Builder.Default
-    private List<OrderMenu> orderMenus = new ArrayList<OrderMenu>();
+    private List<OrderMenu> orderMenus = new ArrayList<>();
 
+    @Transient
+    public void setOrderTime(){
+        this.orderTime = LocalDateTime.now();
+    }
 
     @Transient
     public void setStatus(OrderStatus status){
