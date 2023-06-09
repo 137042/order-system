@@ -3,6 +3,7 @@ package kr.ac.kumoh.ordersystem.mapper;
 import kr.ac.kumoh.ordersystem.domain.Menu;
 import kr.ac.kumoh.ordersystem.domain.Order;
 import kr.ac.kumoh.ordersystem.domain.OrderMenu;
+import kr.ac.kumoh.ordersystem.dto.OrderMenuCountRes;
 import kr.ac.kumoh.ordersystem.dto.OrderMenuReq;
 import kr.ac.kumoh.ordersystem.dto.OrderMenuRes;
 import org.springframework.stereotype.Component;
@@ -48,4 +49,13 @@ public class OrderMenuMapper {
                 .build();
     }
 
+    public OrderMenuCountRes toOrderMenuCountRes(Integer menuId, String name, Integer count){
+        OrderMenuCountRes builder = OrderMenuCountRes.builder()
+                .menuId(menuId)
+                .name(name)
+                .count(count)
+                .build();
+        return builder;
+
+    }
 }
