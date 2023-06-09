@@ -55,7 +55,7 @@ public class MenuController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @PostMapping("/count")
+    @PostMapping("/store/count")
     public ResponseEntity<Map<String, Object>> getMainCount(){
         int res = menuService.findAllMainCount();
         Map<String, Object> map = new HashMap<>();
@@ -63,7 +63,7 @@ public class MenuController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/store/create")
     public ResponseEntity<Map<String, Object>> postMenu(
             @RequestBody @Valid MenuCreateReq menuReq
     ){
@@ -80,7 +80,7 @@ public class MenuController {
         }
     }
 
-    @PostMapping("/update")
+    @PostMapping("/store/update")
     public ResponseEntity<Map<String, Object>> putMenu(
             @RequestBody @Valid MenuReq menuReq
     ){
@@ -90,7 +90,7 @@ public class MenuController {
         return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
 
-    @PutMapping("/updateDiscount/{id}/{discount}")
+    @PutMapping("/store/updateDiscount/{id}/{discount}")
     public ResponseEntity<Map<String, Object>> putMenuDiscount(
             @PathVariable("id") Integer menuId,
             @PathVariable("discount")  String discountPolicy

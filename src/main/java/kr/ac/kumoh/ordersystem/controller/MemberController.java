@@ -20,9 +20,11 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
-    @Autowired
+
+//    @Autowired
 //    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final MemberService memberService;
+//    private final MemberService memberService;
+
 
 
 //    @PostMapping ("/login")

@@ -3,8 +3,8 @@ package kr.ac.kumoh.ordersystem.config;
 import kr.ac.kumoh.ordersystem.config.auth.CustomAuthenticationFilter;
 import kr.ac.kumoh.ordersystem.config.auth.CustomAuthenticationProvider;
 import kr.ac.kumoh.ordersystem.config.auth.CustomLoginSuccessHandler;
-import kr.ac.kumoh.ordersystem.service.MyAuthenticationSuccessHandler;
 import kr.ac.kumoh.ordersystem.service.OAuthService;
+import kr.ac.kumoh.ordersystem.service.MyAuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,22 +25,25 @@ import org.springframework.web.cors.reactive.CorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final OAuthService oAuthService;
-  
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors().disable()
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/**").permitAll().and()
-                .httpBasic().disable()
-                .formLogin().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .oauth2Login()
-                .successHandler(new MyAuthenticationSuccessHandler())
-                .userInfoEndpoint()
-                .userService(oAuthService);
-        return httpSecurity.build();
-    }
+
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity.cors().disable()
+//                .csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/**").permitAll()
+//                .antMatchers("/menu/**").access("hasRole('ROLE_STORE')")
+//                .and()
+//                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .httpBasic().disable()
+//                .formLogin().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//                .oauth2Login()
+//                .successHandler(new MyAuthenticationSuccessHandler())
+//                .userInfoEndpoint()
+//                .userService(oAuthService);
+//        return httpSecurity.build();
+//    }
 
 //    @Override
 //    protected void configure(HttpSecurity http) throws  Exception {
@@ -86,16 +89,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 
 
-    @Bean
-    public UrlBasedCorsConfigurationSource orsConfigurationSource(){
-        var configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:8080");
-        configuration.addAllowedMethod("*");
-        configuration.addAllowedHeader("*");
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+//    @Bean
+//    public UrlBasedCorsConfigurationSource orsConfigurationSource(){
+//        var configuration = new CorsConfiguration();
+//        configuration.addAllowedOrigin("http://localhost:8080");
+//        configuration.addAllowedMethod("*");
+//        configuration.addAllowedHeader("*");
+//        configuration.setAllowCredentials(true);
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 
 }
