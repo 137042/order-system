@@ -1,6 +1,6 @@
 package kr.ac.kumoh.ordersystem.domain;
 
-import kr.ac.kumoh.ordersystem.dto.MenuReq;
+//import kr.ac.kumoh.ordersystem.dto.MenuReq;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,13 +33,13 @@ public class Menu {
         this.id = id;
     }
 
-    public void updateMenu(MenuReq menu){
-        this.name = menu.getName();
-        this.price = menu.getPrice();
-        this.description = menu.getDescription();
-        this.img = menu.getImg();
-        this.type = menu.getType();
-    }
+//    public void updateMenu(MenuReq menu){
+//        this.name = menu.getName();
+//        this.price = menu.getPrice();
+//        this.description = menu.getDescription();
+//        this.img = menu.getImg();
+//        this.type = menu.getType();
+//    }
 
     public void updateDiscountType(DiscountType discountType){
         this.discountType = discountType;

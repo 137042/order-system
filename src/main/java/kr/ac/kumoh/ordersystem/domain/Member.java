@@ -25,6 +25,8 @@ public class Member {
     private String name;
     private String email;
     private String password;
+    private String provider;
+
     @OneToMany(mappedBy = "member")
     @Builder.Default
     private List<Order> orders = new ArrayList<Order>();
@@ -32,14 +34,13 @@ public class Member {
     public Member(Integer id){
         this.id = id;
     }
-
     public void setPassword(String pwd){
         this.password = pwd;
     }
 
-
-    public Member update(String name) {
+    public Member update(String name, String email) {
         this.name = name;
+        this.email = email;
         return this;
     }
 }
