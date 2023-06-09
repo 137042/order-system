@@ -13,8 +13,8 @@ import java.util.Optional;
 
 
 @Repository
-public interface MemberRepository extends JpaRepository<Menu, Integer> {
-   //Optional<Member> findByEmailAndProvider(String email, String provider);
+public interface MemberRepository extends JpaRepository<Member, Integer> {
+    Optional<Member> findByEmailAndProvider(String email, String provider);
   
     @Query("select m from Member m where m.email=:email")
     Member findByEmail(@Param("email") String email);

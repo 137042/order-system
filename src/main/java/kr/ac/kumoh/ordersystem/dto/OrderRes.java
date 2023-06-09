@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -18,6 +19,7 @@ public class OrderRes {
 
     private Integer orderId;
     private OrderStatus orderStatus;
+    private LocalDateTime orderTime;
     private List<OrderMenuRes> orderMenuResList;
 
 }
