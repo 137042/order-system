@@ -5,7 +5,9 @@ import kr.ac.kumoh.ordersystem.domain.DiscountType;
 import kr.ac.kumoh.ordersystem.dto.MenuCreateReq;
 import kr.ac.kumoh.ordersystem.dto.MenuReq;
 import kr.ac.kumoh.ordersystem.dto.MenuRes;
+import kr.ac.kumoh.ordersystem.dto.OrderMenuCountRes;
 import kr.ac.kumoh.ordersystem.service.MenuService;
+import kr.ac.kumoh.ordersystem.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,8 @@ public class MenuController {
 
     private final MenuService menuService;
 
+    private final OrderService orderService;
+
     @PostMapping("/list")
     public ResponseEntity<Map<String, Object>> getAllMenus(){
         List<MenuRes> allMenus = menuService.findAllMenus();
@@ -41,7 +45,7 @@ public class MenuController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<Map<String, Object>> getMenu(
             @PathVariable("id") Integer menuId
     ){
@@ -51,7 +55,7 @@ public class MenuController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @GetMapping("/count")
+    @PostMapping("/count")
     public ResponseEntity<Map<String, Object>> getMainCount(){
         int res = menuService.findAllMainCount();
         Map<String, Object> map = new HashMap<>();

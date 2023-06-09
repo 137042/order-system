@@ -25,6 +25,7 @@ public class MemberMapper {
                 .name(req.getName())
                 .email(req.getEmail())
                 .password(req.getPassword())
+                .provider("")
                 .role(req.getRole());
 
         return builder.build();

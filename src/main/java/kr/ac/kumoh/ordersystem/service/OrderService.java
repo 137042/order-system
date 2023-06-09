@@ -9,8 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -27,8 +29,13 @@ public class OrderService {
         List<OrderMenuCountRes> orderMenuCountResList = new ArrayList<>();
 
         for (Menu menu : menuList) {
-            Integer count = orderMenuRepository.findByName(menu.getName());
-            orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(menu.getId(), menu.getName(), count));
+            try {
+                Integer count = orderMenuRepository.findByName(menu.getName());
+                orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(menu, count));
+            } catch (NullPointerException e) {
+                orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(menu, 0));
+            }
+
         }
         return orderMenuCountResList;
     }

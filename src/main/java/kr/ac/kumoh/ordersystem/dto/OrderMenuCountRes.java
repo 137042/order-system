@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 public class OrderMenuCountRes {
 
     private int menuId;
-    private String name;
     private int count;
-
+    private int total;
 }
