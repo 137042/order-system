@@ -22,16 +22,17 @@ import java.util.Map;
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("/store/menu/count")
-    public ResponseEntity<Map<String, Object>> getEachMenuCount(
-    ){
-        List<OrderMenuCountRes> orderMenuCountRes = orderService.findEachMenuCount();
-        Map<String, Object> map = new HashMap<>();
-        map.put("data", orderMenuCountRes);
-        return new ResponseEntity<>(map, HttpStatus.OK);
-    }
+    // orderMenu 도메인 변경
+//    @PostMapping("/store/menu/count")
+//    public ResponseEntity<Map<String, Object>> getEachMenuCount(
+//    ){
+//        List<OrderMenuCountRes> orderMenuCountRes = orderService.findEachMenuCount();
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("data", orderMenuCountRes);
+//        return new ResponseEntity<>(map, HttpStatus.OK);
+//    }
 
-    @PostMapping("/add/menu")
+    @PostMapping("/menu/add")
     public ResponseEntity<Map<String, Object>> addOrderMenu(
             @RequestBody AddOrderMenuReq addOrderMenuAtOrderReq
             ){

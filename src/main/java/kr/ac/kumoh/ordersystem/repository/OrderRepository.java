@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer>{
+    @Query("SELECT o FROM Order o WHERE o.status = 'basket'")
+    List<Order> findBasket();
     @Query("select o from Order o")
     List<Order> findAll();
 }

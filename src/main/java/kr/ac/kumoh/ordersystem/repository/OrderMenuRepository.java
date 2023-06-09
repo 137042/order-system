@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrderMenuRepository extends JpaRepository<OrderMenu, Integer> {
 
-    @Query("select sum(o.count) from OrderMenu o where o.menu.name=:name")
-    Integer findByName(@Param("name") String name);
+    // OrderMenu 도메인변경됨
+//    @Query("select sum(o.count) from OrderMenu o where o.menu.name=:name")
+//    Integer findByName(@Param("name") String name);
 }

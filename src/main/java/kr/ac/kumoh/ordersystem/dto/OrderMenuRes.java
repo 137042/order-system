@@ -15,6 +15,9 @@ public class OrderMenuRes {
 
     private int menuId;
     private int orderPrice;
-    private int count;
+    private int potatoCount;
+    private int colaCount;
+    private int singleCount;
+    private int setCount;
 
 }

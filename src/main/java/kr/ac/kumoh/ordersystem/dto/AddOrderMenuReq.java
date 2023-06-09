@@ -11,12 +11,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AddOrderMenuReq {
 
-    private Integer orderId;
+    private Integer memberId;
 //    private OrderStatus status;
 //    private Integer storeId;
 //    private Integer memberId;
 //    private List<OrderMenuReq> orderMenuReqList;
     private Integer menuId;
     private int orderPrice;
-    private int count;
+    private int potatoCount;
+    private int colaCount;
+    private int singleCount;
+    private int setCount;
 }

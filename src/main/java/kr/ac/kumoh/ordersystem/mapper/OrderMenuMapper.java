@@ -29,7 +29,10 @@ public class OrderMenuMapper {
                 .order(order)
                 .menu(new Menu(orderMenuReq.getMenuId()))
                 .orderPrice(orderMenuReq.getOrderPrice())
-                .count(orderMenuReq.getCount())
+                .potatoCount(orderMenuReq.getPotatoCount())
+                .colaCount(orderMenuReq.getSingleCount())
+                .setCount(orderMenuReq.getSetCount())
+                .singleCount(orderMenuReq.getSingleCount())
                 .build();
     }
 
@@ -41,7 +44,10 @@ public class OrderMenuMapper {
                 .order(order)
                 .menu(new Menu(addOrderMenuReq.getMenuId()))
                 .orderPrice(addOrderMenuReq.getOrderPrice())
-                .count(addOrderMenuReq.getCount())
+                .potatoCount(addOrderMenuReq.getPotatoCount())
+                .colaCount(addOrderMenuReq.getSingleCount())
+                .setCount(addOrderMenuReq.getSetCount())
+                .singleCount(addOrderMenuReq.getSingleCount())
                 .build();
     }
 
@@ -58,7 +64,10 @@ public class OrderMenuMapper {
         return orderMenuResBuilder
                 .menuId(orderMenu.getMenu().getId())
                 .orderPrice(orderMenu.getOrderPrice())
-                .count(orderMenu.getCount())
+                .potatoCount(orderMenu.getPotatoCount())
+                .colaCount(orderMenu.getSingleCount())
+                .setCount(orderMenu.getSetCount())
+                .singleCount(orderMenu.getSingleCount())
                 .build();
     }
 

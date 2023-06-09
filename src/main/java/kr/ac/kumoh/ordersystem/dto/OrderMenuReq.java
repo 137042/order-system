@@ -13,6 +13,9 @@ public class OrderMenuReq {
 
     private Integer menuId;
     private int orderPrice;
-    private int count;
+    private int potatoCount;
+    private int colaCount;
+    private int singleCount;
+    private int setCount;
 
 }

@@ -2,6 +2,7 @@ package kr.ac.kumoh.ordersystem.service;
 
 import kr.ac.kumoh.ordersystem.domain.Menu;
 import kr.ac.kumoh.ordersystem.domain.Order;
+import kr.ac.kumoh.ordersystem.domain.OrderStatus;
 import kr.ac.kumoh.ordersystem.dto.AddOrderMenuReq;
 import kr.ac.kumoh.ordersystem.dto.OrderMenuCountRes;
 import kr.ac.kumoh.ordersystem.dto.OrderRes;
@@ -36,8 +37,8 @@ public class OrderService {
 
         for (Menu menu : menuList) {
             try {
-                Integer count = orderMenuRepository.findByName(menu.getName());
-                orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(menu, count));
+//                Integer count = orderMenuRepository.findByName(menu.getName());
+//                orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(menu, count));
             } catch (NullPointerException e) {
                 orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(menu, 0));
             }
@@ -46,16 +47,19 @@ public class OrderService {
         return orderMenuCountResList;
     }
     public OrderRes createOrAddMenu(AddOrderMenuReq addOrderMenuReq){
-        Order order;
-        if(addOrderMenuReq.getOrderId() == null)
+        // SELECT o FROM Order o WHERE o.status = 'basket'
+        List<Order> orderRepositoryBasket = orderRepository.findBasket();
+        Order basketOrder;
+        if(orderRepositoryBasket.isEmpty())
         {
-            order = orderRepository.save(new Order());
+            basketOrder = orderRepository.save(new Order());
+            basketOrder.setStatus(OrderStatus.BASKET);
         }
         else
         {
-            order = orderRepository.findById(addOrderMenuReq.getOrderId()).get();
+            basketOrder = orderRepositoryBasket.get(0);
         }
-        order.addOrderMenu(orderMenuMapper.toOrderMenu(order, addOrderMenuReq));
-        return orderMapper.toOrderRes(order);
+        basketOrder.addOrderMenu(orderMenuMapper.toOrderMenu(basketOrder, addOrderMenuReq));
+        return orderMapper.toOrderRes(basketOrder);
     }
 }

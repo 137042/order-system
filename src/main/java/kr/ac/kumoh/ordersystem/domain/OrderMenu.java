@@ -34,20 +34,9 @@ public class OrderMenu {
     @Column(name = "order_price")
     private Integer orderPrice;
 
-    private Integer count;
+    private Integer potatoCount;
+    private Integer colaCount;
+    private Integer singleCount;
+    private Integer setCount;
 
-
-    // 생성 메소드
-    public static kr.ac.kumoh.ordersystem.domain.OrderMenu createOrderItem(Menu menu, int orderPrice, int count) {
-        kr.ac.kumoh.ordersystem.domain.OrderMenu orderMenu = new kr.ac.kumoh.ordersystem.domain.OrderMenu();
-        orderMenu.setMenu(menu);
-
-        orderMenu.setOrderPrice(orderPrice);
-        orderMenu.setCount(count);
-        return orderMenu;
-    }
-
-    public int getTotalPrice() {
-        return getOrderPrice() * getCount();
-    }
 }
