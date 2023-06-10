@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -19,14 +20,14 @@ public class OrderController {
     private final OrderService orderService;
 
     // orderMenu 도메인 변경
-//    @PostMapping("/store/menu/count")
-//    public ResponseEntity<Map<String, Object>> getEachMenuCount(
-//    ){
-//        List<OrderMenuCountRes> orderMenuCountRes = orderService.findEachMenuCount();
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("data", orderMenuCountRes);
-//        return new ResponseEntity<>(map, HttpStatus.OK);
-//    }
+    @PostMapping("/store/menu/count")
+    public ResponseEntity<Map<String, Object>> getEachMenuCount(
+    ){
+        List<OrderMenuCountRes> orderMenuCountRes = orderService.findEachMenuCount();
+        Map<String, Object> map = new HashMap<>();
+        map.put("data", orderMenuCountRes);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 
     @PostMapping("/menu/add")
     public ResponseEntity<Map<String, Object>> addOrderMenu(

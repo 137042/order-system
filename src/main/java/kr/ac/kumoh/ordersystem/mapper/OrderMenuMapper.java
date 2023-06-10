@@ -71,10 +71,11 @@ public class OrderMenuMapper {
                 .build();
     }
 
-    public OrderMenuCountRes toOrderMenuCountRes(Menu menu, Integer count){
+    public OrderMenuCountRes toOrderMenuCountRes(Menu menu, Integer count, Integer setCount){
         OrderMenuCountRes builder = OrderMenuCountRes.builder()
                 .menuId(menu.getId())
                 .count(count)
+                .setCount(setCount)
                 .total(100)
                 .build();
         return builder;
