@@ -29,7 +29,7 @@ public class MemberService {
     }
 
     public List<OrderRes> findAllOrders(MemberReq memberReq) {
-        List<Order> orderList = memberRepository.findByEmail(memberReq.getEmail()).getOrders();
+        List<Order> orderList = memberRepository.findById(memberReq.getId()).get().getOrders();
         // 장바구니용 order 제거
         for (Order order : orderList)
         {
@@ -39,7 +39,7 @@ public class MemberService {
         List<OrderRes> orderResList = new ArrayList<>();
         for (Order order : orderList)
         {
-            orderResList.add(orderMapper.toOrderRes(order));
+            orderResList.add(orderMapper.toOrderResWithOrderMenu(order));
         }
         return orderResList;
     }

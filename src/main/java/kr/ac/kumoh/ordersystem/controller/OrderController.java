@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class OrderController {
     public ResponseEntity<Map<String, Object>> getBasket(
             @RequestBody MemberReq memberReq
             ){
-        OrderRes orderRes = orderService.getBasketRes(memberReq);
+        List<BasketMenuRes> orderRes = orderService.getBasketMenuResList(memberReq);
         Map<String, Object> map = new HashMap<>();
         map.put("data", orderRes);
         return new ResponseEntity<>(map, HttpStatus.OK);
