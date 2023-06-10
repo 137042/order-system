@@ -1,6 +1,7 @@
 package kr.ac.kumoh.ordersystem.dto;
 
 import kr.ac.kumoh.ordersystem.domain.Member;
+import kr.ac.kumoh.ordersystem.domain.MemberRoleType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ public class MemberProfile {
                 .name(name)
                 .email(email)
                 .provider(provider)
+                .role(MemberRoleType.CUSTOMER)
                 .build();
     }
 }
