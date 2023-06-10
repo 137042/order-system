@@ -8,12 +8,14 @@ import kr.ac.kumoh.ordersystem.mapper.OrderMapper;
 import kr.ac.kumoh.ordersystem.mapper.OrderMenuMapper;
 import kr.ac.kumoh.ordersystem.repository.OrderMenuRepository;
 import kr.ac.kumoh.ordersystem.repository.OrderRepository;
+import kr.ac.kumoh.ordersystem.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -34,15 +36,23 @@ public class OrderWebSocketListHandler {
     private final OrderMapper orderMapper;
     private final OrderMenuMapper orderMenuMapper;
 
+    private final StoreRepository storeRepository;
+
     public void makeNewStore(WebSocketSession session, Integer storeId){
         storeSessionList.add(new StoreWebSocketSession(storeId, session));
     }
 
-    public Order makeNewOrder(WebSocketSession session, OrderReq orderReq) throws IOException{
+    public Order makeNewOrder(WebSocketSession session, OrderReq orderReq) throws IOException {
+        Store store = storeRepository.findById(orderReq.getStoreId()).orElseThrow(NoSuchElementException::new);
+
         Order order = orderMapper.toOrder(orderReq);
+        if(store.getOpenTime().isAfter(LocalTime.now()) || store.getCloseTime().isBefore(LocalTime.now()))
+            order.setStatus(OrderStatus.REJECTED);
+
         order.setOrderTime();
         order = orderRepository.save(order);
-        List<OrderMenu> orderMenuList = orderMenuRepository.saveAll(orderMenuMapper.toOrderMenu(order, orderReq.getOrderMenuReqList()));
+        List<OrderMenu> orderMenuList = orderMenuRepository.saveAll(
+                orderMenuMapper.toOrderMenu(order, orderReq.getOrderMenuReqList()));
 
         StoreWebSocketSession storeSession = storeSessionList.stream()
                 .filter(s -> s.getStoreId().equals(orderReq.getStoreId()))

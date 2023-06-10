@@ -1,6 +1,7 @@
 package kr.ac.kumoh.ordersystem.domain;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -34,9 +35,20 @@ public class OrderMenu {
     @Column(name = "order_price")
     private Integer orderPrice;
 
+    @Column(name = "potato_count")
+    @ColumnDefault(value = "0")
     private Integer potatoCount;
+
+    @Column(name = "cola_count")
+    @ColumnDefault(value = "0")
     private Integer colaCount;
+
+    @Column(name = "single_count")
+    @ColumnDefault(value = "0")
     private Integer singleCount;
+
+    @Column(name = "set_count")
+    @ColumnDefault(value = "0")
     private Integer setCount;
 
 }
