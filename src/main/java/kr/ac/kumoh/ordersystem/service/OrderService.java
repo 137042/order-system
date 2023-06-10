@@ -1,9 +1,6 @@
 package kr.ac.kumoh.ordersystem.service;
 
-import kr.ac.kumoh.ordersystem.domain.Member;
-import kr.ac.kumoh.ordersystem.domain.Menu;
-import kr.ac.kumoh.ordersystem.domain.Order;
-import kr.ac.kumoh.ordersystem.domain.OrderStatus;
+import kr.ac.kumoh.ordersystem.domain.*;
 import kr.ac.kumoh.ordersystem.dto.*;
 import kr.ac.kumoh.ordersystem.mapper.OrderCancelMapper;
 import kr.ac.kumoh.ordersystem.mapper.OrderMapper;
@@ -19,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -34,19 +32,36 @@ public class OrderService {
     private final MemberRepository memberRepository;
 
     public List<OrderMenuCountRes> findEachMenuCount(){
-        List<Menu> menuList = menuRepository.findAll();
+        List<Menu> menuList = menuRepository.findAllMain(MenuType.Main);
 
         List<OrderMenuCountRes> orderMenuCountResList = new ArrayList<>();
 
+        int potatoCount = 0;
+        int colaCount = 0;
+
         for (Menu menu : menuList) {
             try {
-//                Integer count = orderMenuRepository.findByName(menu.getName());
-//                orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(menu, count));
-            } catch (NullPointerException e) {
-                orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(menu, 0));
-            }
+                int count = 0;
+                int setCount = 0;
 
+                List<OrderMenu> orderMenuList = orderMenuRepository.findAllById(menu.getId());
+                for (OrderMenu orderMenu : orderMenuList) {
+                    count += orderMenu.getSingleCount();
+                    setCount += orderMenu.getSetCount();
+                    potatoCount += orderMenu.getPotatoCount();
+                    colaCount += orderMenu.getColaCount();
+                }
+                orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(menu, count, setCount));
+            } catch (NullPointerException e) {
+                orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(menu, 0, 0));
+            }
         }
+
+        Menu cola = menuRepository.findByName("콜라");
+        orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(cola, colaCount, 0));
+        Menu potato = menuRepository.findByName("감자튀김");
+        orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(potato, potatoCount, 0));
+
         return orderMenuCountResList;
     }
     public OrderRes createOrAddMenu(AddOrderMenuReq addOrderMenuReq){
