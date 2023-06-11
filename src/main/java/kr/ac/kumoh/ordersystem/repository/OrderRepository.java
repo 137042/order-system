@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer>{
-    @Query("SELECT o FROM Order o WHERE o.status = 'basket' and o.member = :member")
+    @Query("SELECT o FROM Order o WHERE o.status = 'BASKET' and o.member = :member")
     List<Order> findBasket(@Param("member") Member member);
     @Query("select o from Order o")
     List<Order> findAll();
