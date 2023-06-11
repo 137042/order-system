@@ -15,6 +15,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderMapper {
 
+    private final OrderMenuMapper orderMenuMapper;
+
     public Order toOrder(OrderReq orderReq){
         if(orderReq == null)
             return null;
@@ -51,5 +53,18 @@ public class OrderMapper {
                 .orderStatus(order.getStatus())
                 .orderTime(order.getOrderTime())
                 .build();
+    }
+
+    public OrderRes toOrderResWithOrderMenu(Order order){
+        if(order == null)
+            return null;
+        OrderRes.OrderResBuilder orderResBuilder = OrderRes.builder();
+        return orderResBuilder
+                .orderId(order.getId())
+                .orderStatus(order.getStatus())
+                .orderTime(order.getOrderTime())
+                .orderMenuResList(orderMenuMapper.toOrderMenuRes(order.getOrderMenus()))
+                .build();
+
     }
 }

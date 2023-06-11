@@ -61,7 +61,7 @@ public class Order {
     }
 
     // 생성 메소드
-    public static kr.ac.kumoh.ordersystem.domain.Order createOrder(Member member, OrderMenu... orderItems){
+    public static Order createOrder(Member member, OrderMenu... orderItems){
         kr.ac.kumoh.ordersystem.domain.Order order = new kr.ac.kumoh.ordersystem.domain.Order();
         order.setMember(member);
         Arrays.stream(orderItems).forEach(order::addOrderMenu);
@@ -82,17 +82,5 @@ public class Order {
                menu.setOrderPrice(menu.getMenu().getPrice() - 1000);
             }
         }
-    }
-
-    public void cancel(){
-        if(status == OrderStatus.DELIVERED){
-            throw new IllegalStateException("이미 배송완료된 상품은 취소 불가");
-        }
-        this.setStatus(OrderStatus.REJECTED);
-    }
-
-    public int getTotalPrice(){
-        int totalPrice = orderMenus.stream().mapToInt(OrderMenu::getTotalPrice).sum();
-        return totalPrice;
     }
 }

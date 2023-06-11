@@ -26,79 +26,58 @@ import org.springframework.web.cors.reactive.CorsConfigurationSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final OAuthService oAuthService;
 
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity.cors().disable()
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/**").permitAll()
-//                .antMatchers("/menu/**").access("hasRole('ROLE_STORE')")
-//                .and()
-//                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .httpBasic().disable()
-//                .formLogin().disable()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//                .oauth2Login()
-//                .successHandler(new MyAuthenticationSuccessHandler())
-//                .userInfoEndpoint()
-//                .userService(oAuthService);
-//        return httpSecurity.build();
-//    }
+    @Override
+    protected void configure(HttpSecurity http) throws  Exception {
+        http.csrf().disable()
+                .headers().frameOptions().disable()
+                .and()
+                .logout().logoutSuccessUrl("/") //logout 요청시 홈으로 이동 - 기본 logout url = "/logout"
+                .and()
+                .oauth2Login() //OAuth2 로그인 설정 시작점
+                .defaultSuccessUrl("/oauth/loginInfo", true) //OAuth2 성공시 redirect
+                .userInfoEndpoint() //OAuth2 로그인 성공 이후 사용자 정보를 가져올 때 설정 담당
+                .userService(oAuthService); //OAuth2 로그인 성공 시, 작업을 진행할 MemberService
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws  Exception {
-//        http.csrf().disable();
-//        http.authorizeRequests()
-//                .antMatchers("/menu/**").access("hasRole('ROLE_STORE')")
-//                .anyRequest().permitAll()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .permitAll()
-//                .and()
-//                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-//    }
-//
-//    @Bean
-//    public BCryptPasswordEncoder bCryptPasswordEncoder(){
-//        return new BCryptPasswordEncoder();
-//    }
-//
-//    @Bean
-//    public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
-//        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
-//        customAuthenticationFilter.setFilterProcessesUrl("/login");
-//        customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());
-//        customAuthenticationFilter.afterPropertiesSet();
-//        return customAuthenticationFilter;
-//    }
-//
-//    @Bean
-//    public CustomLoginSuccessHandler customLoginSuccessHandler() {
-//        return new CustomLoginSuccessHandler();
-//    }
-//
-//    @Bean
-//    public CustomAuthenticationProvider customAuthenticationProvider() {
-//        return new CustomAuthenticationProvider(bCryptPasswordEncoder());
-//    }
-//
-//    @Override
-//    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) {
-//        authenticationManagerBuilder.authenticationProvider(customAuthenticationProvider());
-//    }
+        http.authorizeRequests()
+                .antMatchers("/menu/store/**").access("hasRole('ROLE_STORE')")
+                .antMatchers("/order/store/**").access("hasRole('ROLE_STORE')")
+                .antMatchers("/ws/order/**").access("hasRole('ROLE_STORE')")
+                .anyRequest().permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .and()
+                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
 
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
-//    @Bean
-//    public UrlBasedCorsConfigurationSource orsConfigurationSource(){
-//        var configuration = new CorsConfiguration();
-//        configuration.addAllowedOrigin("http://localhost:8080");
-//        configuration.addAllowedMethod("*");
-//        configuration.addAllowedHeader("*");
-//        configuration.setAllowCredentials(true);
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//    }
+    @Bean
+    public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
+        customAuthenticationFilter.setFilterProcessesUrl("/login");
+        customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());
+        customAuthenticationFilter.afterPropertiesSet();
+        return customAuthenticationFilter;
+    }
+
+    @Bean
+    public CustomLoginSuccessHandler customLoginSuccessHandler() {
+        return new CustomLoginSuccessHandler();
+    }
+
+    @Bean
+    public CustomAuthenticationProvider customAuthenticationProvider() {
+        return new CustomAuthenticationProvider(bCryptPasswordEncoder());
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) {
+        authenticationManagerBuilder.authenticationProvider(customAuthenticationProvider());
+    }
 
 }

@@ -1,4 +1,4 @@
-package kr.ac.kumoh.ordersystem.web;
+package kr.ac.kumoh.ordersystem.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

@@ -14,5 +14,6 @@ public class OrderMenuCountRes {
 
     private int menuId;
     private int count;
+    private int setCount;
     private int total;
 }

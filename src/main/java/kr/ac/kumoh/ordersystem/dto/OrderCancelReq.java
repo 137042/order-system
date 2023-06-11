@@ -1,17 +1,17 @@
 package kr.ac.kumoh.ordersystem.dto;
 
+import kr.ac.kumoh.ordersystem.domain.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberReq {
-    @NotNull
-    private Integer id;
+public class OrderCancelReq {
+
+    private Integer orderId;
+    private OrderStatus status;
 }
