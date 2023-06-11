@@ -19,5 +19,7 @@ public class OrderMenuRes {
     private int colaCount;
     private int singleCount;
     private int setCount;
+    private String name;
+    private String img;
 
 }

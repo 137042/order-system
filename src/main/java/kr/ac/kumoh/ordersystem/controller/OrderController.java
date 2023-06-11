@@ -8,10 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -44,9 +44,13 @@ public class OrderController {
     public ResponseEntity<Map<String, Object>> getBasket(
             @RequestBody MemberReq memberReq
             ){
-        List<BasketMenuRes> orderRes = orderService.getBasketMenuResList(memberReq);
+//        List<BasketMenuRes> orderRes = orderService.getBasketMenuResList(memberReq);
         Map<String, Object> map = new HashMap<>();
-        map.put("data", orderRes);
+        Optional<OrderRes> possibleOrderRes = orderService.getBasketMenuResList(memberReq);
+        if(possibleOrderRes.isEmpty())
+            map.put("data", null);
+        if(possibleOrderRes.isPresent())
+            map.put("data", possibleOrderRes.get());
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
@@ -59,4 +63,15 @@ public class OrderController {
         map.put("data", orderCancelRes);
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
+    @PostMapping("/store/menu")
+    public ResponseEntity<Map<String, Object>> getStoreOrders(
+            @RequestBody StoreReq storeReq
+    ){
+        List<OrderRes> orderRes = orderService.getStoreOrders(storeReq.getId());
+        Map<String, Object> map = new HashMap<>();
+        map.put("data", orderRes);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
 }
