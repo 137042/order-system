@@ -7,6 +7,8 @@ import kr.ac.kumoh.ordersystem.dto.AddOrderMenuReq;
 import kr.ac.kumoh.ordersystem.dto.OrderMenuCountRes;
 import kr.ac.kumoh.ordersystem.dto.OrderMenuReq;
 import kr.ac.kumoh.ordersystem.dto.OrderMenuRes;
+import kr.ac.kumoh.ordersystem.repository.MenuRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,6 +16,9 @@ import java.util.stream.Collectors;
 
 @Component
 public class OrderMenuMapper {
+
+    @Autowired
+    MenuRepository menuRepository;
 
     public List<OrderMenu> toOrderMenu(Order order, List<OrderMenuReq> orderMenuReqList){
         if(orderMenuReqList == null)
@@ -25,6 +30,7 @@ public class OrderMenuMapper {
         if(orderMenuReq == null)
             return null;
         OrderMenu.OrderMenuBuilder orderMenuBuilder = OrderMenu.builder();
+
         return orderMenuBuilder
                 .order(order)
                 .menu(new Menu(orderMenuReq.getMenuId()))
@@ -45,7 +51,7 @@ public class OrderMenuMapper {
                 .menu(new Menu(addOrderMenuReq.getMenuId()))
                 .orderPrice(addOrderMenuReq.getOrderPrice())
                 .potatoCount(addOrderMenuReq.getPotatoCount())
-                .colaCount(addOrderMenuReq.getSingleCount())
+                .colaCount(addOrderMenuReq.getColaCount())
                 .setCount(addOrderMenuReq.getSetCount())
                 .singleCount(addOrderMenuReq.getSingleCount())
                 .build();
@@ -60,14 +66,17 @@ public class OrderMenuMapper {
     public OrderMenuRes toOrderMenuRes(OrderMenu orderMenu){
         if(orderMenu == null)
             return null;
+        Menu menu = menuRepository.findById(orderMenu.getMenu().getId()).get();
         OrderMenuRes.OrderMenuResBuilder orderMenuResBuilder = OrderMenuRes.builder();
         return orderMenuResBuilder
-                .menuId(orderMenu.getMenu().getId())
+                .menuId(menu.getId())
                 .orderPrice(orderMenu.getOrderPrice())
                 .potatoCount(orderMenu.getPotatoCount())
-                .colaCount(orderMenu.getSingleCount())
+                .colaCount(orderMenu.getColaCount())
                 .setCount(orderMenu.getSetCount())
                 .singleCount(orderMenu.getSingleCount())
+                .name(menu.getName())
+                .img(menu.getImg())
                 .build();
     }
 

@@ -39,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userService(oAuthService); //OAuth2 로그인 성공 시, 작업을 진행할 MemberService
 
         http.authorizeRequests()
+                .antMatchers("/order/store/menu").permitAll()
                 .antMatchers("/menu/store/**").access("hasRole('ROLE_STORE')")
                 .antMatchers("/order/store/**").access("hasRole('ROLE_STORE')")
                 .antMatchers("/ws/order", "/ws/**").permitAll()

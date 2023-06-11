@@ -87,10 +87,23 @@ public class OrderService {
         return orderMapper.toOrderResWithOrderMenu(getBasket(memberReq));
     }
 
-    public List<BasketMenuRes> getBasketMenuResList(MemberReq memberReq){
+    public List<OrderRes> getStoreOrders(Integer id){
+        List<Order> orderList = orderRepository.findAllByStore(id, OrderStatus.BASKET);
+        List<OrderRes> orderResList = new ArrayList<>();
+        for (Order order : orderList)
+        {
+            orderResList.add(orderMapper.toOrderRes(order, orderMenuMapper.toOrderMenuRes(order.getOrderMenus())));
+        }
+        return orderResList;
+    }
+
+    public Optional<OrderRes> getBasketMenuResList(MemberReq memberReq){
         Order basket = getBasket(memberReq);
-        List<BasketMenuRes> basketMenuRes = basketMenuMapper.toBasketMenuResList(basket, basket.getOrderMenus());
-        return basketMenuRes;
+//        List<BasketMenuRes> basketMenuRes = basketMenuMapper.toBasketMenuResList(basket, basket.getOrderMenus());
+//        return basketMenuRes;
+        if(basket == null)
+            return Optional.empty();
+        return Optional.of(orderMapper.toOrderRes(basket, orderMenuMapper.toOrderMenuRes(basket.getOrderMenus())));
     }
 
     private Order getBasket(MemberReq memberReq)

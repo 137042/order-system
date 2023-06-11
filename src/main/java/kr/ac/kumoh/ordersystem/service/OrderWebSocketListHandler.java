@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -50,17 +51,24 @@ public class OrderWebSocketListHandler {
     public Order makeNewOrder(WebSocketSession session, OrderReq orderReq) throws IOException {
         Store store = storeRepository.findById(orderReq.getStoreId()).orElseThrow(NoSuchElementException::new);
         Order order = orderRepository.findById(orderReq.getOrderId()).orElseThrow(NoSuchElementException::new);
-
-        StoreWebSocketSession storeSession = storeSessionList.stream()
-                .filter(s -> s.getStoreId().equals(orderReq.getStoreId()))
-                .findAny().orElseThrow(NoSuchElementException::new);
         order.setOrderTime();
-//        List<OrderMenuRes> orderMenuResList = orderMenuMapper.toOrderMenuRes(order.getOrderMenus());
+
+        Optional<StoreWebSocketSession> possibleStoreSession = storeSessionList.stream()
+                .filter(s -> s.getStoreId().equals(orderReq.getStoreId()))
+                .findAny();
+        StoreWebSocketSession storeSession;
+        if(possibleStoreSession.isPresent())
+            storeSession = possibleStoreSession.get();
+        else {
+            order.setStatus(OrderStatus.REJECTED);
+            order = orderRepository.save(order);
+            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(orderMapper.toOrderRes(order))));
+            return order;
+        }
 
         if(store.getOpenTime().isAfter(LocalTime.now()) || store.getCloseTime().isBefore(LocalTime.now())) {
             order.setStatus(OrderStatus.REJECTED);
             order = orderRepository.save(order);
-
             storeSession.sendToStore(objectMapper, orderMapper.toOrderRes(order));
             session.sendMessage(new TextMessage(objectMapper.writeValueAsString(orderMapper.toOrderRes(order))));
             return order;
@@ -68,9 +76,7 @@ public class OrderWebSocketListHandler {
 
         order.setStatus(OrderStatus.ORDERED);
         order = orderRepository.save(order);
-
-
-        storeSession.sendToStore(objectMapper, orderMapper.toOrderRes(order));
+        storeSession.sendToStore(objectMapper, orderMapper.toOrderRes(order, orderMenuMapper.toOrderMenuRes(order.getOrderMenus())));
         clientSessionList.add(new ClientWebSocketSession(order, session));
 
         return order;
@@ -139,8 +145,8 @@ public class OrderWebSocketListHandler {
         orderRepository.save(clientWebSocketSession.getOrder());
         clientWebSocketSession.sendToClient(objectMapper, orderMapper.toOrderRes(clientWebSocketSession.getOrder()));
 
-        if(order.getStatus().equals(OrderStatus.DELIVERED) || order.getStatus().equals(OrderStatus.REJECTED))
-            clientWebSocketSession.getWebSocketSession().close();
+//        if(order.getStatus().equals(OrderStatus.DELIVERED) || order.getStatus().equals(OrderStatus.REJECTED))
+//            clientWebSocketSession.getWebSocketSession().close();
 
         return order;
     }

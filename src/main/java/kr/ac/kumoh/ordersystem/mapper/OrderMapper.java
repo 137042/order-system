@@ -6,6 +6,8 @@ import kr.ac.kumoh.ordersystem.domain.Store;
 import kr.ac.kumoh.ordersystem.dto.OrderMenuRes;
 import kr.ac.kumoh.ordersystem.dto.OrderReq;
 import kr.ac.kumoh.ordersystem.dto.OrderRes;
+import kr.ac.kumoh.ordersystem.repository.MenuRepository;
+import kr.ac.kumoh.ordersystem.repository.OrderMenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,7 @@ import java.util.List;
 public class OrderMapper {
 
     private final OrderMenuMapper orderMenuMapper;
+    private final OrderMenuRepository orderMenuRepository;
 
     public Order toOrder(OrderReq orderReq){
         if(orderReq == null)
@@ -40,6 +43,7 @@ public class OrderMapper {
                 .orderId(order.getId())
                 .orderStatus(order.getStatus())
                 .orderTime(order.getOrderTime())
+                .totalPrice(order.getTotalPrice(orderMenuRepository))
                 .orderMenuResList(orderMenuResList)
                 .build();
     }
