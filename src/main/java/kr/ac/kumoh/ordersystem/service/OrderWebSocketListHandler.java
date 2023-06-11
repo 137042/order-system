@@ -2,7 +2,6 @@ package kr.ac.kumoh.ordersystem.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.ac.kumoh.ordersystem.domain.*;
-import kr.ac.kumoh.ordersystem.dto.OrderMenuRes;
 import kr.ac.kumoh.ordersystem.dto.OrderReq;
 import kr.ac.kumoh.ordersystem.mapper.OrderMapper;
 import kr.ac.kumoh.ordersystem.mapper.OrderMenuMapper;
@@ -12,6 +11,7 @@ import kr.ac.kumoh.ordersystem.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
@@ -31,12 +31,17 @@ public class OrderWebSocketListHandler {
     private final List<OrderThread> threadList;
 
     private final OrderRepository orderRepository;
-    private final OrderMenuRepository orderMenuRepository;
 
     private final OrderMapper orderMapper;
     private final OrderMenuMapper orderMenuMapper;
 
     private final StoreRepository storeRepository;
+
+    public StoreWebSocketSession getStoreSession(Integer storeId){
+        return storeSessionList.stream()
+                .filter(s -> s.getStoreId().equals(storeId)).findAny()
+                .orElseThrow(NoSuchElementException::new);
+    }
 
     public void makeNewStore(WebSocketSession session, Integer storeId){
         storeSessionList.add(new StoreWebSocketSession(storeId, session));
@@ -44,38 +49,46 @@ public class OrderWebSocketListHandler {
 
     public Order makeNewOrder(WebSocketSession session, OrderReq orderReq) throws IOException {
         Store store = storeRepository.findById(orderReq.getStoreId()).orElseThrow(NoSuchElementException::new);
-
-        Order order = orderMapper.toOrder(orderReq);
-        if(store.getOpenTime().isAfter(LocalTime.now()) || store.getCloseTime().isBefore(LocalTime.now()))
-            order.setStatus(OrderStatus.REJECTED);
-
-        order.setOrderTime();
-        order = orderRepository.save(order);
-        List<OrderMenu> orderMenuList = orderMenuRepository.saveAll(
-                orderMenuMapper.toOrderMenu(order, orderReq.getOrderMenuReqList()));
+        Order order = orderRepository.findById(orderReq.getOrderId()).orElseThrow(NoSuchElementException::new);
 
         StoreWebSocketSession storeSession = storeSessionList.stream()
                 .filter(s -> s.getStoreId().equals(orderReq.getStoreId()))
                 .findAny().orElseThrow(NoSuchElementException::new);
+        order.setOrderTime();
+//        List<OrderMenuRes> orderMenuResList = orderMenuMapper.toOrderMenuRes(order.getOrderMenus());
 
-        List<OrderMenuRes> orderMenuResList = orderMenuMapper.toOrderMenuRes(orderMenuList);
-        storeSession.sendToStore(objectMapper, orderMapper.toOrderRes(order, orderMenuResList));
+        if(store.getOpenTime().isAfter(LocalTime.now()) || store.getCloseTime().isBefore(LocalTime.now())) {
+            order.setStatus(OrderStatus.REJECTED);
+            order = orderRepository.save(order);
+
+            storeSession.sendToStore(objectMapper, orderMapper.toOrderRes(order));
+            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(orderMapper.toOrderRes(order))));
+            return order;
+        }
+
+        order.setStatus(OrderStatus.ORDERED);
+        order = orderRepository.save(order);
+
+
+        storeSession.sendToStore(objectMapper, orderMapper.toOrderRes(order));
         clientSessionList.add(new ClientWebSocketSession(order, session));
 
         return order;
     }
 
     public void makeOrderThreadWaiting(Order order){
+        log.info("ORDER ACCEPTANCE WAITING");
         OrderThread orderThread = new OrderThread(order, new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Thread.sleep(60 * 1000);
                     order.setStatus(OrderStatus.REJECTED);
+                    log.info("ORDER REJECTED");
                     updateOrderStatus(order);
                     notifyToStore(order);
                 } catch (InterruptedException e) {
-                    log.info("ORDER ACCEPTANCE");
+                    log.info("ORDER ACCEPTED");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

@@ -4,9 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 
 @Getter
 @Setter

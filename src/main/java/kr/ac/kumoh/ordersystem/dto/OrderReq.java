@@ -18,6 +18,5 @@ public class OrderReq {
     private OrderStatus status;
     private Integer storeId;
     private Integer memberId;
-    private List<OrderMenuReq> orderMenuReqList;
 
 }

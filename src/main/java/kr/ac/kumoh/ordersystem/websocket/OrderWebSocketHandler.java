@@ -60,7 +60,7 @@ public class OrderWebSocketHandler extends AbstractWebSocketHandler {
                 else if(orderReq.getStatus().equals(OrderStatus.DELIVERED))
                     orderWebSocketListHandler.makeOrderDelivered(orderReq);
             }
-            else if(orderReq.getMemberId() == null && orderReq.getOrderMenuReqList() == null)
+            else if(orderReq.getMemberId() == null)
                 orderWebSocketListHandler.makeNewStore(session, orderReq.getStoreId());
         } catch(IOException e) {
             log.info("NULL variable exists");
