@@ -53,6 +53,7 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
 
     private Map customAttribute(Map attributes, String userNameAttributeName, MemberProfile memberProfile, String registrationId) {
         Map<String, Object> customAttribute = new LinkedHashMap<>();
+        customAttribute.put("member_id", memberRepository.findByEmail(memberProfile.getEmail()).getId());
         customAttribute.put(userNameAttributeName, attributes.get(userNameAttributeName));
         customAttribute.put("provider", registrationId);
         customAttribute.put("name", memberProfile.getName());
