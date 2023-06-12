@@ -43,7 +43,7 @@ public class OrderMapper {
                 .orderId(order.getId())
                 .orderStatus(order.getStatus())
                 .orderTime(order.getOrderTime())
-                .totalPrice(order.getTotalPrice(orderMenuRepository))
+                .totalPrice(order.getTotalPrice())
                 .orderMenuResList(orderMenuResList)
                 .build();
     }
@@ -56,6 +56,7 @@ public class OrderMapper {
                 .orderId(order.getId())
                 .orderStatus(order.getStatus())
                 .orderTime(order.getOrderTime())
+                .totalPrice(order.getTotalPrice())
                 .build();
     }
 
