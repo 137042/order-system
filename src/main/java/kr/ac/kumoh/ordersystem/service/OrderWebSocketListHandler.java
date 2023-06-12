@@ -45,6 +45,10 @@ public class OrderWebSocketListHandler {
                 .orElseThrow(NoSuchElementException::new);
     }
 
+    public List<StoreWebSocketSession> getStoreList(){
+        return storeSessionList;
+    }
+
     public void makeNewStore(WebSocketSession session, Integer storeId){
         storeSessionList.add(new StoreWebSocketSession(storeId, session));
     }
@@ -64,7 +68,9 @@ public class OrderWebSocketListHandler {
         else {
             order.setStatus(OrderStatus.REJECTED);
             order = orderRepository.save(order);
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(orderMapper.toOrderRes(order))));
+            TextMessage textMessage = new TextMessage(objectMapper.writeValueAsString(orderMapper.toOrderRes(order)));
+            session.sendMessage(textMessage);
+            log.info("[ MESSAGE SENT ]  #{} {}", textMessage, "------------------------------------------------------------");
             return order;
         }
 
@@ -72,7 +78,10 @@ public class OrderWebSocketListHandler {
             order.setStatus(OrderStatus.REJECTED);
             order = orderRepository.save(order);
             storeSession.sendToStore(objectMapper, orderMapper.toOrderRes(order));
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(orderMapper.toOrderRes(order))));
+
+            TextMessage textMessage = new TextMessage(objectMapper.writeValueAsString(orderMapper.toOrderRes(order)));
+            session.sendMessage(textMessage);
+            log.info("[ MESSAGE SENT ] #{} {}", textMessage, "------------------------------------------------------------");
             return order;
         }
 
