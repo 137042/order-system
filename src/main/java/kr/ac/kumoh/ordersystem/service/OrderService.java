@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class OrderService {
     private final OrderCancelMapper orderCancelMapper;
     private final MemberRepository memberRepository;
     private final StoreRepository storeRepository;
-    private final BasketMenuMapper basketMenuMapper;
+    private final Clock clock;
 
     public List<OrderMenuCountRes> findEachMenuCount(){
         List<Menu> menuList = menuRepository.findAllMain(MenuType.Main);
@@ -67,14 +68,10 @@ public class OrderService {
     public OrderRes createOrAddMenu(AddOrderMenuReq addOrderMenuReq){
         Store store = storeRepository.findById(addOrderMenuReq.getStoreId()).get();
         Order basketOrder = getBasket(addOrderMenuReq);
-        try{
-            LocalTime now = LocalTime.now();
-            if(now.isBefore(store.getOpenTime()) || now.isAfter(store.getCloseTime()))
-                throw new RuntimeException("영업시간이 아닙니다.");
-            basketOrder.addOrderMenu(orderMenuMapper.toOrderMenu(basketOrder, addOrderMenuReq));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        LocalTime now = LocalTime.now(clock);
+        if(now.isBefore(store.getOpenTime()) || now.isAfter(store.getCloseTime()))
+            throw new IllegalArgumentException("영업시간이 아닙니다.");
+        basketOrder.addOrderMenu(orderMenuMapper.toOrderMenu(basketOrder, addOrderMenuReq));
         return orderMapper.toOrderResWithOrderMenu(basketOrder);
     }
 
