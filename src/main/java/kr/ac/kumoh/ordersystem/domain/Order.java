@@ -84,7 +84,6 @@ public class Order {
     // price = 주문 총 가격
     @Transient
     public static void updateOrderPrice(OrderMenu menu, int price) {
-
         if (menu.getMenu().getDiscountType() == DiscountType.FixedRate && price >= 15000) {
             menu.setOrderPrice((int) (menu.getMenu().getPrice() - (menu.getMenu().getPrice() * 0.1)));
         } else if (menu.getMenu().getDiscountType() == DiscountType.FixedQuantity && price >= 10000) {
@@ -104,9 +103,9 @@ public class Order {
 
         orderMenus = orderMenuRepository.findAllByOrder(this);
         for(OrderMenu orderMenu : orderMenus){
-            if(orderMenu.getMenu().getDiscountType().equals(DiscountType.FixedRate))
+            if(orderMenu.getMenu().getDiscountType().equals(DiscountType.FixedQuantity))
                 discountAmount += 1000;
-            else if(orderMenu.getMenu().getDiscountType().equals(DiscountType.FixedQuantity))
+            else if(orderMenu.getMenu().getDiscountType().equals(DiscountType.FixedRate))
                 discountRate *= 0.9;
             else if(orderMenu.getMenu().getDiscountType().equals(DiscountType.Time)
                     && orderTime.isBefore(ChronoLocalDateTime.from(LocalTime.of(11, 0))))

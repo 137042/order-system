@@ -28,6 +28,7 @@ public class Menu {
     @Enumerated(EnumType.STRING)
     private MenuType type;
     @Enumerated(EnumType.STRING)
+    @Column(name="discount_type")
     private DiscountType discountType;
 
     public Menu(Integer id){
