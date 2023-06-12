@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -64,8 +65,16 @@ public class OrderService {
         return orderMenuCountResList;
     }
     public OrderRes createOrAddMenu(AddOrderMenuReq addOrderMenuReq){
+        Store store = storeRepository.findById(addOrderMenuReq.getStoreId()).get();
         Order basketOrder = getBasket(addOrderMenuReq);
-        basketOrder.addOrderMenu(orderMenuMapper.toOrderMenu(basketOrder, addOrderMenuReq));
+        try{
+            LocalTime now = LocalTime.now();
+            if(now.isBefore(store.getOpenTime()) || now.isAfter(store.getCloseTime()))
+                throw new Exception();
+            basketOrder.addOrderMenu(orderMenuMapper.toOrderMenu(basketOrder, addOrderMenuReq));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return orderMapper.toOrderResWithOrderMenu(basketOrder);
     }
 
