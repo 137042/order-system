@@ -36,8 +36,8 @@ public class OrderService {
 
         List<OrderMenuCountRes> orderMenuCountResList = new ArrayList<>();
 
-        int potatoCount = 0;
-        int colaCount = 0;
+//        int potatoCount = 0;
+//        int colaCount = 0;
 
         for (Menu menu : menuList) {
             try {
@@ -48,8 +48,8 @@ public class OrderService {
                 for (OrderMenu orderMenu : orderMenuList) {
                     count += orderMenu.getSingleCount();
                     setCount += orderMenu.getSetCount();
-                    potatoCount += orderMenu.getPotatoCount();
-                    colaCount += orderMenu.getColaCount();
+//                    potatoCount += orderMenu.getPotatoCount();
+//                    colaCount += orderMenu.getColaCount();
                 }
                 orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(menu, count, setCount));
             } catch (NullPointerException e) {
@@ -57,10 +57,10 @@ public class OrderService {
             }
         }
 
-        Menu cola = menuRepository.findByName("콜라");
-        orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(cola, colaCount, 0));
-        Menu potato = menuRepository.findByName("감자튀김");
-        orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(potato, potatoCount, 0));
+//        Menu cola = menuRepository.findByName("콜라");
+//        orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(cola, colaCount, 0));
+//        Menu potato = menuRepository.findByName("감자튀김");
+//        orderMenuCountResList.add(orderMenuMapper.toOrderMenuCountRes(potato, potatoCount, 0));
 
         return orderMenuCountResList;
     }
