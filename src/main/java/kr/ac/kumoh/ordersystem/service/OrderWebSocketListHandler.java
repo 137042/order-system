@@ -35,6 +35,7 @@ public class OrderWebSocketListHandler {
 
     private final OrderMapper orderMapper;
     private final OrderMenuMapper orderMenuMapper;
+    private final OrderMenuRepository orderMenuRepository;
 
     private final StoreRepository storeRepository;
 
@@ -52,6 +53,7 @@ public class OrderWebSocketListHandler {
         Store store = storeRepository.findById(orderReq.getStoreId()).orElseThrow(NoSuchElementException::new);
         Order order = orderRepository.findById(orderReq.getOrderId()).orElseThrow(NoSuchElementException::new);
         order.setOrderTime();
+        order.calculatePrice(orderMenuRepository);
 
         Optional<StoreWebSocketSession> possibleStoreSession = storeSessionList.stream()
                 .filter(s -> s.getStoreId().equals(orderReq.getStoreId()))
