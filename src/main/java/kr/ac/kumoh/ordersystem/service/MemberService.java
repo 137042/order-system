@@ -1,6 +1,7 @@
 package kr.ac.kumoh.ordersystem.service;
 
 import kr.ac.kumoh.ordersystem.domain.*;
+import kr.ac.kumoh.ordersystem.dto.MemberOrderByTimeReq;
 import kr.ac.kumoh.ordersystem.dto.MemberReq;
 import kr.ac.kumoh.ordersystem.dto.MemberRes;
 import kr.ac.kumoh.ordersystem.dto.OrderRes;
@@ -42,6 +43,22 @@ public class MemberService {
         {
             orderResList.add(orderMapper.toOrderResWithOrderMenu(order));
         }
+        return orderResList;
+    }
+
+    public List<OrderRes> findOrdersBetweenTime(MemberOrderByTimeReq memberOrderByTimeReq) {
+        List<Order> orderList = orderRepository.findOrderByTimeBetween(
+                memberOrderByTimeReq.getMemberId(),
+                memberOrderByTimeReq.getStartDate(),
+                memberOrderByTimeReq.getEndDate()
+        );
+
+        List<OrderRes> orderResList = new ArrayList<>();
+        for (Order order : orderList)
+        {
+            orderResList.add(orderMapper.toOrderResWithOrderMenu(order));
+        }
+
         return orderResList;
     }
 }

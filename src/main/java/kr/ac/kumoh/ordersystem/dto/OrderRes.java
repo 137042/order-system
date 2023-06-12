@@ -20,7 +20,7 @@ public class OrderRes {
 
     private Integer orderId;
     private OrderStatus orderStatus;
-    private LocalTime orderTime;
+    private LocalDateTime orderTime;
     private Integer totalPrice;
     private List<OrderMenuRes> orderMenuResList;
 

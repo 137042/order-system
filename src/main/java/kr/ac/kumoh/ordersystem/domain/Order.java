@@ -39,7 +39,7 @@ public class Order {
     private Member member;
 
     @Column(name = "order_time")
-    private LocalTime orderTime;
+    private LocalDateTime orderTime;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @Builder.Default
@@ -47,7 +47,7 @@ public class Order {
 
     @Transient
     public void setOrderTime(){
-        this.orderTime = LocalTime.now();
+        this.orderTime = LocalDateTime.now();
     }
 
     @Transient
@@ -99,7 +99,7 @@ public class Order {
             else if(orderMenu.getMenu().getDiscountType().equals(DiscountType.FixedQuantity))
                 discountRate *= 0.9;
             else if(orderMenu.getMenu().getDiscountType().equals(DiscountType.Time)
-            && orderTime.isBefore(LocalTime.of(11, 0)))
+            && orderTime.toLocalTime().isBefore(LocalTime.of(11, 0)))
                 timeDiscountAmount += 1000;
 
             sum = sum + orderMenu.getPotatoCount() * potato + orderMenu.getColaCount() * cola;
