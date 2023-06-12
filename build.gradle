@@ -31,7 +31,13 @@ dependencies {
 	implementation 'com.h2database:h2'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
+	testImplementation 'net.bytebuddy:byte-buddy'
+	testImplementation 'org.mockito:mockito-core'
+	testImplementation 'org.mockito:mockito-junit-jupiter'
 	testImplementation 'org.mockito:mockito-inline'
+	testImplementation 'junit:junit'
+	testImplementation 'net.bytebuddy:byte-buddy-agent'
+	testImplementation 'org.objenesis:objenesis:3.3'
 
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	compileOnly 'org.projectlombok:lombok'
