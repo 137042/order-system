@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,8 +50,8 @@ public class MemberService {
     public List<OrderRes> findOrdersBetweenTime(MemberOrderByTimeReq memberOrderByTimeReq) {
         List<Order> orderList = orderRepository.findOrderByTimeBetween(
                 memberOrderByTimeReq.getMemberId(),
-                memberOrderByTimeReq.getStartDate(),
-                memberOrderByTimeReq.getEndDate()
+                removeTime(memberOrderByTimeReq.getStartDate()),
+                removeTime(memberOrderByTimeReq.getEndDate()).plusDays(1)
         );
 
         List<OrderRes> orderResList = new ArrayList<>();
@@ -60,5 +61,9 @@ public class MemberService {
         }
 
         return orderResList;
+    }
+    private LocalDateTime removeTime(LocalDateTime localDateTime)
+    {
+        return localDateTime.withHour(0).withMinute(0).withSecond(0).withNano(0);
     }
 }

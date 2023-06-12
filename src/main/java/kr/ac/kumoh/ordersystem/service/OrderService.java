@@ -70,7 +70,7 @@ public class OrderService {
         try{
             LocalTime now = LocalTime.now();
             if(now.isBefore(store.getOpenTime()) || now.isAfter(store.getCloseTime()))
-                throw new Exception();
+                throw new RuntimeException("영업시간이 아닙니다.");
             basketOrder.addOrderMenu(orderMenuMapper.toOrderMenu(basketOrder, addOrderMenuReq));
         } catch (Exception e) {
             e.printStackTrace();
@@ -146,10 +146,11 @@ public class OrderService {
             }
 
             basketOrder = orderRepository.save(
-                    Order.builder()
+                        Order.builder()
                             .member(member)
                             .status(OrderStatus.BASKET)
                             .store(store)
+                            .totalPrice(0)
                             .build()
                     );
         }
