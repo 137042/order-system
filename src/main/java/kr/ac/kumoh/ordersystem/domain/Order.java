@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +40,10 @@ public class Order {
     private Member member;
 
     @Column(name = "order_time")
-    private LocalTime orderTime;
+    private LocalDateTime orderTime;
+
+    @Column(name = "total_price")
+    private Integer totalPrice;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @Builder.Default
@@ -47,23 +51,28 @@ public class Order {
 
     @Transient
     public void setOrderTime(){
-        this.orderTime = LocalTime.now();
+        this.orderTime = LocalDateTime.now();
     }
 
     @Transient
     public void setStatus(OrderStatus status){
         this.status = status;
     }
+
+    @Transient
     public void setMember(Member member){
         this.member = member;
         member.getOrders().add(this);
     }
+
+    @Transient
     public void addOrderMenu(OrderMenu orderMenu){
         orderMenus.add(orderMenu);
         orderMenu.setOrder(this);
     }
 
     // 생성 메소드
+    @Transient
     public static Order createOrder(Member member, OrderMenu... orderItems){
         kr.ac.kumoh.ordersystem.domain.Order order = new kr.ac.kumoh.ordersystem.domain.Order();
         order.setMember(member);
@@ -73,6 +82,7 @@ public class Order {
     }
 
     // price = 주문 총 가격
+    @Transient
     public static void updateOrderPrice(OrderMenu menu, int price) {
 
         if (menu.getMenu().getDiscountType() == DiscountType.FixedRate && price >= 15000) {
@@ -87,7 +97,7 @@ public class Order {
         }
     }
 
-    public Integer getTotalPrice(OrderMenuRepository orderMenuRepository){
+    public void calculatePrice(OrderMenuRepository orderMenuRepository){
         int potato = 1700, cola = 1500;
         int discountAmount = 0, timeDiscountAmount = 0;
         double discountRate = 1, sum = 0;
@@ -99,7 +109,7 @@ public class Order {
             else if(orderMenu.getMenu().getDiscountType().equals(DiscountType.FixedQuantity))
                 discountRate *= 0.9;
             else if(orderMenu.getMenu().getDiscountType().equals(DiscountType.Time)
-            && orderTime.isBefore(LocalTime.of(11, 0)))
+                    && orderTime.isBefore(ChronoLocalDateTime.from(LocalTime.of(11, 0))))
                 timeDiscountAmount += 1000;
 
             sum = sum + orderMenu.getPotatoCount() * potato + orderMenu.getColaCount() * cola;
@@ -114,7 +124,7 @@ public class Order {
         else
             sum -= timeDiscountAmount;
 
-        return (int) sum;
+        totalPrice = (int) sum;
     }
 
 }
